@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0">
-     <widget class="QGroupBox" name="gBx_single_2">
+     <widget class="QGroupBox" name="gBx_horizontal">
       <property name="title">
        <string>horizontale Linie</string>
       </property>
@@ -25,21 +25,21 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="2" column="1">
-        <widget class="QComboBox" name="cBox_vertikal_2">
+        <widget class="QComboBox" name="cBx_vertikal_2">
          <item>
           <property name="text">
-           <string>von rechts</string>
+           <string>von oben</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>von links</string>
+           <string>von unten</string>
           </property>
          </item>
         </widget>
        </item>
        <item row="5" column="0" colspan="3">
-        <widget class="QPushButton" name="Btn_single_2">
+        <widget class="QPushButton" name="Btn_horizontal">
          <property name="text">
           <string>Anzeichnen</string>
          </property>
@@ -83,10 +83,10 @@
        <item row="1" column="2">
         <widget class="QDoubleSpinBox" name="spinBx_horiz_2">
          <property name="suffix">
-          <string>m</string>
+          <string>cm</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>2</number>
          </property>
          <property name="maximum">
           <double>100.000000000000000</double>
@@ -102,10 +102,10 @@
        <item row="4" column="2">
         <widget class="QDoubleSpinBox" name="spinBx_vertikal_3">
          <property name="suffix">
-          <string>m</string>
+          <string>cm</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>2</number>
          </property>
          <property name="maximum">
           <double>100.000000000000000</double>
@@ -118,10 +118,10 @@
        <item row="2" column="2">
         <widget class="QDoubleSpinBox" name="spinBx_vertikal_2">
          <property name="suffix">
-          <string>m</string>
+          <string>cm</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>2</number>
          </property>
          <property name="maximum">
           <double>100.000000000000000</double>
@@ -142,7 +142,7 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QGroupBox" name="gBx_single_3">
+     <widget class="QGroupBox" name="gBx_vertikal">
       <property name="title">
        <string>vertikale Linie</string>
       </property>
@@ -151,21 +151,21 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="2" column="1">
-        <widget class="QComboBox" name="cBox_vertikal_3">
+        <widget class="QComboBox" name="cBx_vertikal_3">
          <item>
           <property name="text">
-           <string>von rechts</string>
+           <string>von oben</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>von links</string>
+           <string>von unten</string>
           </property>
          </item>
         </widget>
        </item>
        <item row="5" column="0" colspan="3">
-        <widget class="QPushButton" name="Btn_single_3">
+        <widget class="QPushButton" name="Btn_vertikal">
          <property name="text">
           <string>Anzeichnen</string>
          </property>
@@ -202,10 +202,10 @@
        <item row="1" column="2">
         <widget class="QDoubleSpinBox" name="spinBx_horiz_3">
          <property name="suffix">
-          <string>m</string>
+          <string>cm</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>2</number>
          </property>
          <property name="maximum">
           <double>100.000000000000000</double>
@@ -218,10 +218,10 @@
        <item row="4" column="2">
         <widget class="QDoubleSpinBox" name="spinBx_vertikal_4">
          <property name="suffix">
-          <string>m</string>
+          <string>cm</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>2</number>
          </property>
          <property name="maximum">
           <double>100.000000000000000</double>
@@ -234,10 +234,10 @@
        <item row="2" column="2">
         <widget class="QDoubleSpinBox" name="spinBx_vertikal_5">
          <property name="suffix">
-          <string>m</string>
+          <string>cm</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>2</number>
          </property>
          <property name="maximum">
           <double>100.000000000000000</double>
@@ -284,7 +284,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QComboBox" name="cBox_vertikal">
+        <widget class="QComboBox" name="cBx_vertikal">
          <item>
           <property name="text">
            <string>von oben</string>
@@ -300,10 +300,10 @@
        <item row="1" column="2">
         <widget class="QDoubleSpinBox" name="spinBx_vertikal">
          <property name="suffix">
-          <string>m</string>
+          <string>cm</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>2</number>
          </property>
          <property name="maximum">
           <double>100.000000000000000</double>
@@ -330,10 +330,10 @@
        <item row="0" column="2">
         <widget class="QDoubleSpinBox" name="spinBx_horiz">
          <property name="suffix">
-          <string>m</string>
+          <string>cm</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>2</number>
          </property>
          <property name="maximum">
           <double>100.000000000000000</double>
@@ -367,34 +367,34 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="Btn_new">
          <property name="text">
           <string>neue Wand</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="Btn_middle">
          <property name="text">
           <string>Mittelpunkt anzeigen lassen</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="Btn_about">
          <property name="text">
           <string>about</string>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="Btn_aboutQt">
+         <property name="text">
+          <string>about Qt</string>
+         </property>
+        </widget>
+       </item>
       </layout>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="lb_fail">
-      <property name="text">
-       <string>FAIL</string>
-      </property>
      </widget>
     </item>
     <item row="2" column="0">
@@ -409,6 +409,13 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="3" column="0" colspan="2">
+     <widget class="QLabel" name="lb_fail">
+      <property name="text">
+       <string>FAIL</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

@@ -244,9 +244,9 @@ public slots:
 
         if(sqrt(x*x+y*y)<= r){
 #if GUI_ENABLE
-            QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Koordinaten sind nicht weit genug entfernt");
+            QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Koordinaten sind nicht weit genug vom Koordinatenursprung entfernt. Innerhalb des Drehradius können keine Koordinaten angezeigt werden.");
 #else
-            cerr << "Die Koordinaten sind nicht weit genug entfernt" << endl;
+            cerr << "Die Koordinaten sind nicht weit genug vom Koordinatenursprung entfernt. Innerhalb des Drehradius können keine Koordinaten angezeigt werden." << endl;
 #endif
             return false;
         }

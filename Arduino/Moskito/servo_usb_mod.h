@@ -182,11 +182,9 @@ void servo_usb_runtime()
         break;
       case '2':                                         // eine Position nach unten fahren (1deg)
         down();
-        delay(500);
         break;
       case '4':                                         // eine Position nach links fahren (1deg)
         left();
-        delay(500);
         break;
       case '6':                                         // eine Position nach rechts fahren (1deg)
         right();

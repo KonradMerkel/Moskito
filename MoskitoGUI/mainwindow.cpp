@@ -108,7 +108,7 @@ void MainWindow::currentPos()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this,QString::fromUtf8("Über Moskito"),QString::fromUtf8("<h1>"+ QCoreApplication::applicationName().toLatin1() +"</h1><p>"+ QCoreApplication::applicationVersion().toLatin1() +"</p><b>Moskito for Fedora (32/64 bit)</b><br>Ziel des Projektes ist es ein Mulitifunktionsgerät namens Moskito, bestehend aus mehreren Modulen und einer entsprechenden Software, zu entwickeln. Das dabei entstandene Gerät kann durch mehrschichtige Softwarearchitekturen, einem einfachen Aufbau, sowie mathematischen Beschreibung als Ziel- und Vermessungssystem sowie als Unterhaltungsgerät eingesetzt werden. "
+    QMessageBox::about(this,QString::fromUtf8("Über Moskito"),QString::fromUtf8("<h1>"+ QCoreApplication::applicationName().toLatin1() +"</h1><p>"+ QCoreApplication::applicationVersion().toLatin1() +"</p><b>Moskito for Fedora (32/64 bit)</b><br>Ziel des Projektes ist es ein Mulitifunktionsgerät namens Moskito, bestehend aus mehreren Modulen und einer entsprechenden Software, zu entwickeln. Das dabei entstandene Gerät kann durch mehrschichtige Softwarearchitekturen, einem einfachen Aufbau, sowie mathematischen Beschreibung als Vermessungssystem und als Unterhaltungsgerät eingesetzt werden. "
                                                                                "Der Forschungsschwerpunkt des Projektes liegt vor allem auf der mathematischen Beschreibung und dem Softwaredesign. "
                                                                                 "Hard- und Softwareentwickler: Konrad Merkel"));
 
