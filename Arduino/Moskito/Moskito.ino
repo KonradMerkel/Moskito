@@ -25,8 +25,10 @@
 #define BAUD 115200					                            // Baudrate für serielle Schnittstelle		
 #define H_SERVO_PIN 11					                        // Alpha-Servo
 #define V_SERVO_PIN 12				 	                        // Beta-Servo
-#define BUTTON_A_PIN 31
-#define BUTTON_B_PIN 33
+#define BUTTON_A_PIN 35
+#define BUTTON_B_PIN 37
+#define JOYSTICK_ALPHA A1                               // Joystick horizontale Bedienung
+#define JOYSTICK_BETA A0                                // Joystick für vertikal
 #define LASER_PIN 41
 #define LCD_ZEILEN 4					                          // Anzahl an Zeilen auf dem Display (mindestens 4)
 #define LCD_LAENGE 20					                          // Anzahl der Zeichen pro Zeile
@@ -36,6 +38,7 @@
 #define CLEAR_TIME 8000 				                        // Zeit nachdem die Oberfläche neu geschrieben wird
 #define TRICKER_TIME 800 				                        // Zeit zwischen dem Rücken des Trickers.
 #define BTN_TIME 200					                          // Zeit zwischen den Button-Abfragen
+#define JOY_TIME 50                                     // Zeit zwischen den langsamen Joystickkommandos
 #define WEBDUINO_FAVICON_DATA ""			                  // Icon der Webseite
 #define WEBDUINO_FAIL_MESSAGE "<h1>Keine gültige Adresse</h1>"
 #define PASSWD_POS 45                                    // Speicherstelle des Passwortes (AdminWebSeite) im EEPROM
@@ -76,6 +79,7 @@ unsigned short int tricker_n = 0;			                  // Stelle an der der Trick
 
 bool LASER = false;                                     // zeigt ob der Laser aktiviert ist
 unsigned long int btn_t = 0;                            // Betriebszeit der letzten Button-Abfrage
+unsigned long int joy_t = 0;
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};	    // MAC-Adresse des Gerätes
 IPAddress ip(192, 168, 178, 35); 		  	                // für den Fall, dass DHCP nicht funktioniert
@@ -87,7 +91,7 @@ String buffer = "";                                     // Buffer für das Empfa
 P(start) = "<HTML><HEAD><TITLE>Moskito</TITLE><META NAME=\"AUTHOR\" CONTENT=\"Konrad Merkel\"></HEAD><BODY LANG=\"de-DE\" DIR=\"LTR\">";
 P(end) = "</BODY></HTML>";
 P(about) = "<H1 STYLE=\"background: transparent\"><FONT FACE=\"DejaVu Sans, sans-serif\">Über das Projekt</FONT></H1><H2 CLASS=\"western\"><FONT COLOR=\"#c5000b\"><FONT FACE=\"Cantarell\">13.12</FONT></FONT></H2><P STYLE=\"margin-bottom: 0cm\"><FONT COLOR=\"#4c4c4c\"><B>Moskito with HTTP</B></FONT>"
-"<BR>Ziel des Projektes ist es ein Mulitifunktionsgerät namens Moskito, bestehend aus mehreren Modulen und einer entsprechenden Software, zu entwickeln. Das dabei entstandene Gerät kann durch mehrschichtige Softwarearchitekturen, einem einfachen Aufbau, sowie mathematischen Beschreibung als Ziel- und Vermessungssystem sowie als Unterhaltungsgerät eingesetzt werden. Der Forschungsschwerpunkt des Projektes liegt vor allem auf der mathematischen Beschreibung und dem Softwaredesign. Hard- und Softwareentwickler: Konrad Merkel</P>"
+"<BR>Ziel des Projektes ist es ein Mulitifunktionsgerät namens Moskito, bestehend aus mehreren Modulen und einer entsprechenden Software, zu entwickeln. Das dabei entstandene Gerät kann durch mehrschichtige Softwarearchitekturen, einem einfachen Aufbau, sowie mathematischen Beschreibung als Vermessungssystem und Unterhaltungsgerät eingesetzt werden. Der Forschungsschwerpunkt des Projektes liegt vor allem auf der mathematischen Beschreibung und dem Softwaredesign. Hard- und Softwareentwickler: Konrad Merkel</P>"
 "<P STYLE=\"margin-bottom: 0cm\"><BR></P><P STYLE=\"margin-bottom: 0cm\"><A HREF=\"review.html\">Hier</A> geht es weiter zum Geräteüberblick..</P>";
 
 P(admin) = "<H1 STYLE=\"background: transparent\"><FONT FACE=\"DejaVu Sans, sans-serif\">Kontrollzentrum</FONT></H1><H2 CLASS=\"western\"><FONT FACE=\"Cantarell\">Hier können Sie das Gerät steuern</FONT></H2>";
@@ -192,11 +196,32 @@ void ethernet_switch(bool on)                           // aktiviert bzw. deakti
 void btn_runtime()
 {
   if ((millis() - btn_t) >= BTN_TIME){
-  if (digitalRead(BUTTON_A_PIN)){ laser_switch(!LASER);}
-  if (digitalRead(BUTTON_B_PIN)){
-    ethernet_switch(!ethernet);
+    if (digitalRead(BUTTON_A_PIN)){ laser_switch(!LASER);}
+    if (digitalRead(BUTTON_B_PIN)){
+      ethernet_switch(!ethernet);
+    }
+    btn_t = millis();
   }
-  btn_t = millis();
+  if (analogRead(JOYSTICK_ALPHA) > 1000){
+    alphaServo.write(alphaServo.read()+2);
+  }else if (analogRead(JOYSTICK_ALPHA) < 20){
+    alphaServo.write(alphaServo.read()-2);
+  }else if ((analogRead(JOYSTICK_ALPHA) > 700) && ((millis() - joy_t) >= JOY_TIME)){
+    alphaServo.write(alphaServo.read()+1);
+    joy_t = millis();
+  }else if ((analogRead(JOYSTICK_ALPHA) < 500) && ((millis() - joy_t) >= JOY_TIME)){
+    alphaServo.write(alphaServo.read()-1);
+  }
+  if (analogRead(JOYSTICK_BETA) > 1000){
+    betaServo.write(betaServo.read()+2);
+  }else if (analogRead(JOYSTICK_BETA) < 200){
+    betaServo.write(betaServo.read()-2);
+  }else if ((analogRead(JOYSTICK_BETA) > 700) && ((millis() - joy_t) >= JOY_TIME)){
+    betaServo.write(betaServo.read()+1);
+    joy_t = millis();
+  }else if ((analogRead(JOYSTICK_BETA) < 500) && ((millis() - joy_t) >= JOY_TIME)){
+    betaServo.write(betaServo.read()-1);
+    joy_t = millis();
   }
 }
 
@@ -257,21 +282,23 @@ void setup()
 *************************************************************/
 void loop()
 {
-  for (int i=0; i<5; i++){
+  //for (int i=0; i<1; i++){ // Berechnungen in der Dokumentation für i<5, dies wurde aber zu Gunsten des Joysticks geändert
   servo_usb_runtime();
   if (ethernet)
     webserver.processConnection();
   servo_usb_runtime();
+  //btn_runtime();
   lcd_runtime();
   servo_usb_runtime();
   lcd_runtime();
   if (ethernet)
     webserver.processConnection();
+  //btn_runtime();
   servo_usb_runtime();
   lcd_runtime();
   servo_usb_runtime();
   lcd_runtime();
-  }
+  //}
   btn_runtime();
   
   /* Bemerkung:

@@ -83,10 +83,6 @@ public:
     explicit Kom_Moskito(QObject *parent = 0):
         QObject(parent)
     {
-       /* trash_bool = new bool;
-        trash_int = new int;
-        trash_bool_ = new bool;
-        trash_int_ = new int;*/
         port = new QextSerialPort(QLatin1String("/dev/ttyACM0"), QextSerialPort::Polling);
     }
     ~Kom_Moskito()

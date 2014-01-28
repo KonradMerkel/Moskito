@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>811</width>
-    <height>495</height>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="2" column="1">
-        <widget class="QComboBox" name="cBx_vertikal_2">
+        <widget class="QComboBox" name="cBx_vertikal_h">
          <item>
           <property name="text">
            <string>von oben</string>
@@ -38,10 +38,10 @@
          </item>
         </widget>
        </item>
-       <item row="5" column="0" colspan="3">
+       <item row="7" column="0" colspan="3">
         <widget class="QPushButton" name="Btn_horizontal">
          <property name="text">
-          <string>Anzeichnen</string>
+          <string>Ersten Punkt anzeichnen</string>
          </property>
         </widget>
        </item>
@@ -53,7 +53,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QComboBox" name="cBx_horiz_2">
+        <widget class="QComboBox" name="cBx_horiz_h">
          <item>
           <property name="text">
            <string>von rechts</string>
@@ -81,7 +81,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_horiz_2">
+        <widget class="QDoubleSpinBox" name="spinBx_horiz_h">
          <property name="suffix">
           <string>cm</string>
          </property>
@@ -97,10 +97,10 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QSpinBox" name="spinBox"/>
+        <widget class="QSpinBox" name="spinBx_n_h"/>
        </item>
-       <item row="4" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_vertikal_3">
+       <item row="5" column="2">
+        <widget class="QDoubleSpinBox" name="spinBx_abst_h">
          <property name="suffix">
           <string>cm</string>
          </property>
@@ -116,7 +116,7 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_vertikal_2">
+        <widget class="QDoubleSpinBox" name="spinBx_vertikal_h">
          <property name="suffix">
           <string>cm</string>
          </property>
@@ -131,10 +131,17 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="5" column="0" colspan="2">
         <widget class="QLabel" name="label_6">
          <property name="text">
           <string>Abstand zwischen den Punkten</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QCheckBox" name="cBx_ganzeWand_h">
+         <property name="text">
+          <string>Punkt auf die gesamte Wand verteilen</string>
          </property>
         </widget>
        </item>
@@ -150,8 +157,15 @@
        <bool>false</bool>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Vertikal (erster Punkt)</string>
+         </property>
+        </widget>
+       </item>
        <item row="2" column="1">
-        <widget class="QComboBox" name="cBx_vertikal_3">
+        <widget class="QComboBox" name="cBx_vertikal_v">
          <item>
           <property name="text">
            <string>von oben</string>
@@ -164,10 +178,10 @@
          </item>
         </widget>
        </item>
-       <item row="5" column="0" colspan="3">
+       <item row="6" column="0" colspan="3">
         <widget class="QPushButton" name="Btn_vertikal">
          <property name="text">
-          <string>Anzeichnen</string>
+          <string>Ersten Punkt anzeichnen</string>
          </property>
         </widget>
        </item>
@@ -179,7 +193,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QComboBox" name="cBx_horiz_3">
+        <widget class="QComboBox" name="cBx_horiz_v">
          <item>
           <property name="text">
            <string>von rechts</string>
@@ -192,15 +206,8 @@
          </item>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Vertikal (erster Punkt)</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_horiz_3">
+        <widget class="QDoubleSpinBox" name="spinBx_horiz_v">
          <property name="suffix">
           <string>cm</string>
          </property>
@@ -216,7 +223,7 @@
         </widget>
        </item>
        <item row="4" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_vertikal_4">
+        <widget class="QDoubleSpinBox" name="spinBx_abst_v">
          <property name="suffix">
           <string>cm</string>
          </property>
@@ -232,7 +239,7 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_vertikal_5">
+        <widget class="QDoubleSpinBox" name="spinBx_vertikal_v">
          <property name="suffix">
           <string>cm</string>
          </property>
@@ -255,12 +262,19 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QSpinBox" name="spinBox_2"/>
+        <widget class="QSpinBox" name="spinBx_n_v"/>
        </item>
        <item row="3" column="0" colspan="2">
         <widget class="QLabel" name="label_10">
          <property name="text">
           <string>Anzahl der Punkte</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="3">
+        <widget class="QCheckBox" name="cBx_ganzeWand_v">
+         <property name="text">
+          <string>Punkt auf die gesamte Wand verteilen</string>
          </property>
         </widget>
        </item>
@@ -270,7 +284,7 @@
     <item row="1" column="0">
      <widget class="QGroupBox" name="gBx_single">
       <property name="title">
-       <string>einzelne Stellen</string>
+       <string>einzelne Punkte</string>
       </property>
       <property name="checkable">
        <bool>false</bool>
@@ -367,23 +381,9 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QPushButton" name="Btn_new">
-         <property name="text">
-          <string>neue Wand</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="Btn_middle">
          <property name="text">
           <string>Mittelpunkt anzeigen lassen</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="Btn_about">
-         <property name="text">
-          <string>about</string>
          </property>
         </widget>
        </item>
@@ -441,5 +441,70 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cBx_ganzeWand_h</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBx_abst_h</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>222</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>370</x>
+     <y>184</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cBx_ganzeWand_v</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBx_abst_v</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>632</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>706</x>
+     <y>184</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cBx_ganzeWand_h</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBx_horiz_h</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>180</x>
+     <y>217</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cBx_ganzeWand_v</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBx_horiz_v</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>571</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>697</x>
+     <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -53,10 +53,10 @@ void lcd_runtime()
   /* Position der Servomotoren in Echtzeit */
   lcd.setCursor(7, 3);
   lcd.print(alphaServo.read());
-  lcd.print("  ");                                      // mögliche letze Stellen löschen
+  lcd.print(" ");                                      // mögliche letze Stellen löschen
   lcd.setCursor(17, 3);
   lcd.print(betaServo.read());
-  lcd.print("  ");
+  lcd.print(" ");
 }
 
 #endif // LCD_MOD_H

@@ -46,8 +46,13 @@ public:
 public slots:
     void singlePoint();
     void middle();
+    void aboutQt();
+    void horizontalLine();
+    void vertikalLine();
 
 private:
+    int hLine_n;
+    int vLine_n;
     Ui::MainWindow *ui;                             // graphische Benutzeroberfläche
     settings *dialg_settings;                       // Ausmessung und Ebenenerzeugung nach dem Start (Ausmessung der Wand)
 };
