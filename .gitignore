@@ -39,6 +39,7 @@ Thumbs.db
 # QT #
 ######
 *moc_*
+*.user
 
 # MISC #
 ########

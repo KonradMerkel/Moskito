@@ -29,9 +29,6 @@
 #ifndef TIME_OUT
 #define TIME_OUT 50                                 // Timeout für das initialisieren des Gerätes nachdem SERIAL_INIT_TIME verstrichen ist
 #endif
-#ifndef GUI_ENABLE
-#define GUI_ENABLE 1                                // Ermöglicht GUI-Unterstützung
-#endif
 #ifndef DELTA_ALPHA
 #define DELTA_ALPHA 0   /* UNGENAU */                            // Korrekturfaktor des Alphaservos, aufgrund der Einspannung
 #endif
@@ -49,18 +46,10 @@
 #include <QtTest/QtTest>
 #include <math.h>
 #include "qextserialport.h"
-
-#if DEBUGING
-#include <iostream>
-using namespace std;
-#endif
-
-#if GUI_ENABLE
 #include <QtGui/QMessageBox>
-#else
 #include <iostream>
+
 using namespace std;
-#endif
 
 /************************************************************
                   Strukturen und globale Funktionen
@@ -107,11 +96,8 @@ public:
             port->setTimeout(TIME_OUT);
 
             if(!port->isOpen()) {
-#if GUI_ENABLE
                 QMessageBox::critical(0, "port error", "Impossible to open the port!");
-#else
-                 cerr << "Impossible to open the port!\n";
-#endif
+                cerr << "Impossible to open the port!\n";
                 return false;
             }
             QTest::qWait(SERIAL_INIT_TIME);// Zeit um die Verbindung zu initialisieren
@@ -239,22 +225,16 @@ public slots:
         double r = RADIUS;
 
         if(sqrt(x*x+y*y)<= r){
-#if GUI_ENABLE
             QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Koordinaten sind nicht weit genug vom Koordinatenursprung entfernt. Innerhalb des Drehradius können keine Koordinaten angezeigt werden.");
-#else
             cerr << "Die Koordinaten sind nicht weit genug vom Koordinatenursprung entfernt. Innerhalb des Drehradius können keine Koordinaten angezeigt werden." << endl;
-#endif
             return false;
         }
 
         alpha = 2* ((180 * atan((y+ sqrt(x*x+y*y-r * r))/(x+r))) / PI); // es gibt eine 2. Lösung!
 
         if ((alpha > 180) || (alpha < 0)) {
-#if GUI_ENABLE
             QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Position Alpha kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Alpha = " + QString::number(alpha));
-#else
             cerr << "Die Position Alpha kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Alpha = " << alpha << endl;
-#endif
             return false;
         }
 
@@ -265,11 +245,8 @@ public slots:
         else
             beta = 90;
         if ((beta > 180) || (beta < 0)){
-#if GUI_ENABLE
-            //QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Position Beta kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Beta = " + QString::number(beta));
-#else
+            QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Position Beta kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Beta = " + QString::number(beta));
             cerr << "Die Position Beta kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Beta = " << beta << endl;
-#endif
             return false;
         }
 
@@ -279,13 +256,9 @@ public slots:
         double should = ( (cos(PI*alpha/180) * x + y* sin(PI*alpha/180)) );
         if((r >= should - 0.05) && (r <= should + 0.05)){
         }else{
-#if GUI_ENABLE
-            //if (QMessageBox::Yes != QMessageBox::warning(0,"Berechnung der Winkel","Der Winkel Alpha ist bei der Prüfung durchgefallen. Möchten Sie trotzdem fortfahren?",QMessageBox::Yes,QMessageBox::No,QMessageBox::Default))
-            //    return false;
-#else
+            QMessageBox::warning(0,"Berechnung der Winkel","Der Winkel Alpha ist bei der Prüfung durchgefallen. Möchten Sie trotzdem fortfahren?");
             cerr << "Der Winkel Alpha ist bei der Prüfung durchgefallen.\n" ;
             return false;
-#endif
         }
 #if DEBUGING
         cout << "Errechnetes Alpha+DELTA_ALPHA: " << (alpha + DELTA_ALPHA) << " Beta: " << beta << endl;

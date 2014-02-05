@@ -44,14 +44,14 @@ public:
     ~MainWindow();
 
 public slots:
-    void singlePoint();
-    void middle();
-    void aboutQt();
-    void horizontalLine();
-    void vertikalLine();
+    void singlePoint();                             // zeichnet einen einzelnen Punkt an der Wand an (entsprechend der Eingabe im GUI)
+    void middle();                                  // zeigt die Mitte der Wand
+    void aboutQt();                                 // about-Fenster von Qt
+    void horizontalLine();                          // zeichnet einzelne Punkte einer horizontalen Linie
+    void vertikalLine();                            // zeichnet einzelne Punkte einer vertikalen Linie
 
 private:
-    int hLine_n;
+    int hLine_n;                                    // Anzahl der schon gezeichneten Punkte einer Linie
     int vLine_n;
     Ui::MainWindow *ui;                             // graphische Benutzeroberfläche
     settings *dialg_settings;                       // Ausmessung und Ebenenerzeugung nach dem Start (Ausmessung der Wand)
