@@ -6,9 +6,13 @@
 
 #include <Arduino.h>
 
-void aim(int alpha, int beta, bool laser)               // Zielwinkel von USB anfahren
+void aim(int alpha, int beta, bool laser, bool drive_on = false)  // Zielwinkel von USB anfahren
 {
-  laser_switch(false);                                  // Während der Drehung wird der Laser aus
+  if (!laser)
+    drive_on = false;
+  else if (!drive_on){
+    laser_switch(false);                                  // Während der Drehung wird der Laser aus
+  }
   int pos = alphaServo.read();
   if (pos > alpha){                                     // Langsames (exaktes) Anfahren der Winkel
     for(; pos >= alpha; pos--){
@@ -96,7 +100,7 @@ void right()
         } else{
             alphaServo.write(alphaServo.read()+9);
             delay(500);
-            alphaServo.write(alphaServo.read()-20);
+            alphaServo.write(alphaServo.read()-10);
         }
         delay(500);
 }
@@ -136,11 +140,13 @@ void servo_usb_runtime()
         }
         i++;
         if (buffer[i] == '1')
-          aim(param_.toInt(), param__.toInt(), true);
+          aim(param_.toInt(), param__.toInt(), true, false);
         else if (buffer[i] == '*')
-          aim(param_.toInt(), param__.toInt(), LASER);
+          aim(param_.toInt(), param__.toInt(), LASER, false);
+          else if (buffer[i] == '+')
+          aim(param_.toInt(), param__.toInt(), true, true);
         else
-          aim(param_.toInt(), param__.toInt(), false);
+          aim(param_.toInt(), param__.toInt(), false, false);
         i = i +2;
         break;
 #if ENABLE_MORSE

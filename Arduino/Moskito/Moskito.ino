@@ -23,16 +23,17 @@
 #define ENABLE_MORSE 1                                  // ein- bzw ausschalten der Morsefunktionen
                                                         // ermöglicht dauerhaft gute Performance
 #define BAUD 115200					                            // Baudrate für serielle Schnittstelle		
-#define H_SERVO_PIN 11					                        // Alpha-Servo
-#define V_SERVO_PIN 12				 	                        // Beta-Servo
+#define H_SERVO_PIN 7 					                        // Alpha-Servo
+#define V_SERVO_PIN 6 				 	                        // Beta-Servo
 #define BUTTON_A_PIN 35
 #define BUTTON_B_PIN 37
 #define JOYSTICK_ALPHA A1                               // Joystick horizontale Bedienung
 #define JOYSTICK_BETA A0                                // Joystick für vertikal
-#define LASER_PIN 41
+#define JOYSTICK_BTN 33                                 // Button am Joystick
+#define LASER_PIN 22
 #define LCD_ZEILEN 4					                          // Anzahl an Zeilen auf dem Display (mindestens 4)
 #define LCD_LAENGE 20					                          // Anzahl der Zeichen pro Zeile
-#define MANUAL_DTIME 4					                        // Zeit für das Füllen des Buffers pro Char
+#define MANUAL_DTIME 6					                        // Zeit für das Füllen des Buffers pro Char
 							                                          // (Serielle Kom.) und Zeit für das Ausrichten der
 							                                          // Servomotoren pro deg
 #define CLEAR_TIME 8000 				                        // Zeit nachdem die Oberfläche neu geschrieben wird
@@ -193,33 +194,55 @@ void ethernet_switch(bool on)                           // aktiviert bzw. deakti
 /************************************************************
 			 Button - Modul
 *************************************************************/
+void accurate()
+{
+        if ((alphaServo.read()-10) > 0){
+            alphaServo.write(alphaServo.read()-10);
+            delay(500);
+            alphaServo.write(alphaServo.read()+10);
+        } else{
+            alphaServo.write(alphaServo.read()+10);
+            delay(500);
+            alphaServo.write(alphaServo.read()-10);
+        }
+        if ((betaServo.read()+10) < 180){
+            betaServo.write(betaServo.read()+10);
+            delay(500);
+            betaServo.write(betaServo.read()-10);
+        } else{
+            betaServo.write(betaServo.read()-10);
+            delay(500);
+            betaServo.write(betaServo.read()+10);
+        }
+        delay(500);
+}
+
 void btn_runtime()
 {
   if ((millis() - btn_t) >= BTN_TIME){
     if (digitalRead(BUTTON_A_PIN)){ laser_switch(!LASER);}
-    if (digitalRead(BUTTON_B_PIN)){
-      ethernet_switch(!ethernet);
-    }
+    if (digitalRead(BUTTON_B_PIN)){ ethernet_switch(!ethernet);}
+    if (!digitalRead(JOYSTICK_BTN)){ /*accurate();*/ }
     btn_t = millis();
   }
-  if (analogRead(JOYSTICK_ALPHA) > 1000){
+  if (analogRead(JOYSTICK_ALPHA) > 900){
     alphaServo.write(alphaServo.read()+2);
-  }else if (analogRead(JOYSTICK_ALPHA) < 20){
+  }else if (analogRead(JOYSTICK_ALPHA) < 30){
     alphaServo.write(alphaServo.read()-2);
-  }else if ((analogRead(JOYSTICK_ALPHA) > 700) && ((millis() - joy_t) >= JOY_TIME)){
+  }else if ((analogRead(JOYSTICK_ALPHA) > 680) && ((millis() - joy_t) >= JOY_TIME)){
     alphaServo.write(alphaServo.read()+1);
     joy_t = millis();
-  }else if ((analogRead(JOYSTICK_ALPHA) < 500) && ((millis() - joy_t) >= JOY_TIME)){
+  }else if ((analogRead(JOYSTICK_ALPHA) < 520) && ((millis() - joy_t) >= JOY_TIME)){
     alphaServo.write(alphaServo.read()-1);
   }
-  if (analogRead(JOYSTICK_BETA) > 1000){
+  if (analogRead(JOYSTICK_BETA) > 900){
     betaServo.write(betaServo.read()+2);
-  }else if (analogRead(JOYSTICK_BETA) < 200){
+  }else if (analogRead(JOYSTICK_BETA) < 30){
     betaServo.write(betaServo.read()-2);
-  }else if ((analogRead(JOYSTICK_BETA) > 700) && ((millis() - joy_t) >= JOY_TIME)){
+  }else if ((analogRead(JOYSTICK_BETA) > 680) && ((millis() - joy_t) >= JOY_TIME)){
     betaServo.write(betaServo.read()+1);
     joy_t = millis();
-  }else if ((analogRead(JOYSTICK_BETA) < 500) && ((millis() - joy_t) >= JOY_TIME)){
+  }else if ((analogRead(JOYSTICK_BETA) < 520) && ((millis() - joy_t) >= JOY_TIME)){
     betaServo.write(betaServo.read()-1);
     joy_t = millis();
   }

@@ -27,7 +27,7 @@
 #define SERIAL_INIT_TIME 1500                       // Zeit um eine Verbindung zum Moskito herzustellen
 #endif
 #ifndef TIME_OUT
-#define TIME_OUT 50                                 // Timeout für das initialisieren des Gerätes nachdem SERIAL_INIT_TIME verstrichen ist
+#define TIME_OUT 1000                                 // Timeout für das initialisieren des Gerätes nachdem SERIAL_INIT_TIME verstrichen ist
 #endif
 #ifndef DELTA_ALPHA
 #define DELTA_ALPHA 0   /* UNGENAU */                            // Korrekturfaktor des Alphaservos, aufgrund der Einspannung
@@ -120,8 +120,8 @@ public:
     // Die Rückgabe ist im Sendeformat alpha#beta#laser#ethernet
     QString pos()
     {
+        port->readAll(); // möglichen Buffer leeren
         if (send("i") == false){ // akutelle Position abfragen
-            port->readAll(); // möglichen Buffer leeren
             return "xx#xx#0#0"; // Fehler beim senden
         }
 
@@ -129,23 +129,30 @@ public:
         int numBytes;
         int i=0;
 
-        do{
-        numBytes = port->bytesAvailable();
-        QTest::qWait(4);
-        i++;
-        if (i>10)
-            return "xx#xx#0#0"; // Fehler
-        }while(numBytes <= 7);
-
+        for (; i<=(TIME_OUT/10); i++){
+            numBytes = port->bytesAvailable();
+            QTest::qWait(10);
+            if (i==(TIME_OUT/5)){ // Abfrage wiederholen
+                port->readAll(); // möglichen Buffer leeren
+                if (send("i") == false){ // akutelle Position abfragen
+                    return "xx#xx#0#0"; // Fehler beim senden
+                }
+            }
+            if(numBytes > 7){
+                i = (TIME_OUT/10) -1;
+                break;
+            }
+        }
         if(numBytes > 12)
             numBytes = 12;
+        else if (numBytes < 7)
+            return "xx#xx#0#0";
 
-        i = port->read(buffer, numBytes);
-        port->readAll();
-        if (i != -1){
+        if (port->read(buffer, numBytes)!= -1){
             return QString(buffer);
-        }else
-            return "xx#xx#0#0";     // Fehler
+        }else{
+            return "xx#xx#0#0"; // Fehler beim senden
+        }
     }
 
     // führt die read()-Fkt aus und splittet den String als Alpha und Beta
@@ -273,11 +280,13 @@ public slots:
     bool aim_deg(int alpha, int beta, int laser=2)
     {
         if (laser == 1)
-            return send(QString("a" + QString::number(alpha) + "#" + QString::number(beta) + "#1#"));       // Laser wird aktiviert
+            return send(QString("a" + QString::number(alpha) + "#" + QString::number(beta) + "#1"));       // Laser wird aktiviert
         else if (laser == 2)
-            return send(QString("a" + QString::number(alpha) + "#" + QString::number(beta) + "#*#"));       // Laser bleibt unverändert
+            return send(QString("a" + QString::number(alpha) + "#" + QString::number(beta) + "#*"));       // Laser bleibt unverändert
+        else if (laser == 3)
+            return send(QString("a" + QString::number(alpha) + "#" + QString::number(beta) + "#+"));       // Laser wird auch während der Drehung angeschalten
         else
-            return send(QString("a" + QString::number(alpha) + "#" + QString::number(beta) + "#0#"));       // Laser wird deaktiviert
+            return send(QString("a" + QString::number(alpha) + "#" + QString::number(beta) + "#0"));       // Laser wird deaktiviert
     }
 
     // Schaltet den Laser / Ethernet an und aus
@@ -312,7 +321,7 @@ public slots:
 #endif
 
 private:
-    // Mülleimer (wenn Referenzen nötig sind, aber die Werte verorfen werden können
+    // Mülleimer (wenn Referenzen nötig sind, aber die Werte verorfen werden können)
     int trash_int;
     bool trash_bool;
     int trash_int_;
