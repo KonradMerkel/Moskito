@@ -2,7 +2,7 @@
 ** Moskito 1.1
 ***************************************************************
 ** (c) Konrad Merkel
-** 13. Dezember 2013 (vorgänger Version: 5. Juli 2013)
+** 13. Dezember 2013 (Vorgängerversion: 5. Juli 2013)
 **************************************************************/
 
 /* Bemerkung:
@@ -30,12 +30,16 @@
 #define JOYSTICK_ALPHA A1                               // Joystick horizontale Bedienung
 #define JOYSTICK_BETA A0                                // Joystick für vertikal
 #define JOYSTICK_BTN 33                                 // Button am Joystick
+#define ULTRA_ECHO 29                                   // Ultraschallsensor (Echo)
+#define ULTRA_TRIG 31                                   // Ultraschallsensor (Trig)
 #define LASER_PIN 22
+#define GREEN_LED 28
 #define LCD_ZEILEN 4					                          // Anzahl an Zeilen auf dem Display (mindestens 4)
 #define LCD_LAENGE 20					                          // Anzahl der Zeichen pro Zeile
 #define MANUAL_DTIME 6					                        // Zeit für das Füllen des Buffers pro Char
 							                                          // (Serielle Kom.) und Zeit für das Ausrichten der
 							                                          // Servomotoren pro deg
+#define TO_MIDDLE 0.4 /* ungenau */                                 // Abstand zwischen Ultraschallsensor und Drehachse des Betaservos (in cm)
 #define CLEAR_TIME 8000 				                        // Zeit nachdem die Oberfläche neu geschrieben wird
 #define TRICKER_TIME 800 				                        // Zeit zwischen dem Rücken des Trickers.
 #define BTN_TIME 200					                          // Zeit zwischen den Button-Abfragen
@@ -80,12 +84,13 @@ unsigned short int tricker_n = 0;			                  // Stelle an der der Trick
 
 bool LASER = false;                                     // zeigt ob der Laser aktiviert ist
 unsigned long int btn_t = 0;                            // Betriebszeit der letzten Button-Abfrage
-unsigned long int joy_t = 0;
+unsigned long int joy_t = 0;                            // Betriebszeit der letzten Joystickbedienung
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};	    // MAC-Adresse des Gerätes
 IPAddress ip(192, 168, 178, 35); 		  	                // für den Fall, dass DHCP nicht funktioniert
 
 String buffer = "";                                     // Buffer für das Empfangen (Serielle Kom.)
+
 /************************************************************
 		Webseite im Programmspreicher
 *************************************************************/
@@ -268,6 +273,9 @@ void setup()
   lcd.begin(LCD_LAENGE, LCD_ZEILEN);                    // LCD initialisieren
   pinMode(BUTTON_A_PIN, INPUT);                         // Buttons initialisieren
   pinMode(BUTTON_B_PIN, INPUT);
+  pinMode(ULTRA_ECHO, INPUT);
+  pinMode(GREEN_LED, OUTPUT);
+  pinMode(ULTRA_TRIG, OUTPUT);
   pinMode(LASER_PIN, OUTPUT);                           // Laser initialisieren
   digitalWrite(LASER_PIN, HIGH);                        // Laser ausschalten
   alphaServo.attach(H_SERVO_PIN);                       // Servomotoren initialisieren
@@ -279,7 +287,7 @@ void setup()
   
   /* Startbildschirm */
   #if MOSKITO_SERIAL_DEBUGGING
-  Serial.println("zeige Startbildschirm an");
+  Serial.println("Zeige Startbildschirm an");
   #endif
   lcd.setCursor(4, 0);
   lcd.print("Moskito 2013");
@@ -295,8 +303,9 @@ void setup()
   tricker_all = tricker_s + tricker_ethernet;
   lcdRefresh();
   #if MOSKITO_SERIAL_DEBUGGING
-  Serial.println("Initialisierung Beendet");
+  Serial.println("Initialisierung beendet");
   #endif
+  digitalWrite(GREEN_LED, HIGH);
 }
 
 

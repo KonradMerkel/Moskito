@@ -52,9 +52,9 @@ public slots:
     void setV();
 
     // Geben die Konfigurationswerte aus
-    double getRadius();
-    double getHigh();
-    double getV();
+    double getRadius() const;
+    double getHigh() const;
+    double getV() const;
     
 private:
     Ui::Konf *ui;                               // graphische Benutzeroberfläche

@@ -83,6 +83,11 @@ void MainWindow::aim(int laser){
         target.y = ui->doubleSpinBox_y->value();
         target.z = ui->doubleSpinBox_z->value();
         moskito->aim_Koord(target,laser);
+        double dy, dz;
+        if (moskito->variation(target, dy, dz)){
+            QMessageBox::warning(this,"Fehlerberechnung des Zielvorgangs", QString("Der horizontale Fehler dy liegt bei ") + QString::number(dy) + QString("\nDer vertikale Fehler dz liegt bei ") + QString::number(dz));
+        }
+
     }else if (ui->gBox_man->isChecked()) {
         moskito->aim_deg(ui->spinBox_alpha->value(), ui->spinBox_beta->value(),laser);
     }

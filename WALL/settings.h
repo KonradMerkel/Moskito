@@ -46,6 +46,7 @@ public:
     Kom_Moskito *moskito;                               // Kommunikation mit Moskito
 
     double getAbstand();                                // ermittelt den Abstand zwischen Wand und Moskito
+    void setAbstand(double dist);
 
     double getTop() {return top;}
     double getButtom() {return buttom;}
@@ -57,10 +58,12 @@ public slots:
     void lo_clicked();                                  // ro = rechts oben; lo = links oben; ru = rechts unten; lu = links unten
     void ru_clicked();
     void lu_clicked();
+    void distance_clicked();
 
 private slots:
     double calcKoord_horizontal(int alpha);             // errechnet aus den Drehwinkeln die Koordinaten
     double calcKoord_vertikal(int alpha, int beta);
+
 
 private:
     Ui::settings *ui;

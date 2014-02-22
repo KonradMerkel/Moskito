@@ -81,15 +81,15 @@ void Konf::setV()
     ui->dSpinBx_v->setValue(ui->dSpinBx_calcV->value());
 }
 
-double Konf::getHigh()
+double Konf::getHigh() const
 {
     return ui->dspinBx_high->value();
 }
-double Konf::getRadius()
+double Konf::getRadius() const
 {
     return ui->dspinBx_radius->value();
 }
-double Konf::getV()
+double Konf::getV() const
 {
     return ui->dSpinBx_v->value();
 }

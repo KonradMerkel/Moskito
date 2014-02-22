@@ -155,6 +155,37 @@ public:
         }
     }
 
+    double distance() // Ultraschallmessung an der derzeitigen Position
+    {
+        if (send("x") == false){ // akutelle Position abfragen
+            port->readAll(); // möglichen Buffer leeren
+            return -1; // Fehler beim senden
+        }
+
+        char buffer[8];
+        int numBytes;
+        int i=0;
+
+        do{
+        numBytes = port->bytesAvailable();
+        QTest::qWait(4);
+        i++;
+        }while(numBytes <= 4);
+
+        QTest::qWait(4);
+        if(numBytes > 7)
+            numBytes = 7;
+
+        i = port->read(buffer, numBytes);
+        port->readAll();
+        if (i != -1){
+            double dist = QString(buffer).toInt();
+            dist = dist / 1000;
+            return dist;  // Erfolg
+        }else
+            return -1;     // Fehler
+    }
+
     // führt die read()-Fkt aus und splittet den String als Alpha und Beta
     // Der Rückgabewert gibt an, ob die Übertragung funktioniert hat
     bool pos(int &alpha, int &beta)
@@ -196,7 +227,7 @@ public slots:
     // sendet den angegebenen String an das Gerät
     // ist mit dem sendToMoskito-Signal verknüpft und wird in der Regel darüber aufgerufen, da dadurch die Aufnahmefunktion
     // benachrichtigt wird
-    bool send(QString s)
+    bool send(QString const s)
     {
       if (-1 == port->write(s.toLocal8Bit())) {
           return false;
@@ -212,19 +243,15 @@ public slots:
     }
 
     // fährt die Servos in den Standby-Modus
-    // Das heißt: Alpha=90deg ;  Beta=90deg
+    // Das heißt: Alpha=90deg ;  Beta=90deg ; Laser aus
     bool standby()
     {
-        return send("a90#90#0#");
+        return send("a90#90#0");
     }
 
     // rechnet die Koordinaten in Dehwinkel um
-    // Die Drehwinkel werden auf der Benutzeroberfläche in die entsprechenden Objekte geschrieben
-    // Dies ermöglicht ein nachverfolgen der bzw. auslesen der Drehwinkel
-    // aim_Koord() ruft danach aim_deg() auf
-    bool aim_Koord(Koord target, int laser=2)
+    bool calc_Koord(Koord const target, double& alpha, double& beta)
     {
-        double alpha, beta;
         double x = target.x;
         double y = target.y;
         double z = target.z;
@@ -232,18 +259,13 @@ public slots:
         double r = RADIUS;
 
         if(sqrt(x*x+y*y)<= r){
-            QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Koordinaten sind nicht weit genug vom Koordinatenursprung entfernt. Innerhalb des Drehradius können keine Koordinaten angezeigt werden.");
+            QMessageBox::warning(0,"Koordinaten nicht berechenbar","Die Koordinaten sind nicht weit genug vom Koordinatenursprung entfernt. Innerhalb des Drehradius können keine Koordinaten angezeigt werden.");
             cerr << "Die Koordinaten sind nicht weit genug vom Koordinatenursprung entfernt. Innerhalb des Drehradius können keine Koordinaten angezeigt werden." << endl;
             return false;
         }
 
-        alpha = 2* ((180 * atan((y+ sqrt(x*x+y*y-r * r))/(x+r))) / PI); // es gibt eine 2. Lösung!
+        alpha = 2* ((180 * atan((y+ sqrt(x*x+y*y-r * r))/(x+r))) / PI) + DELTA_ALPHA; // es gibt eine 2. Lösung!
 
-        if ((alpha > 180) || (alpha < 0)) {
-            QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Position Alpha kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Alpha = " + QString::number(alpha));
-            cerr << "Die Position Alpha kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Alpha = " << alpha << endl;
-            return false;
-        }
 
         if (z < h)
             beta = 180 - (180* atan( sqrt(x*x + y*y) / (h-z)  ) / PI);
@@ -251,27 +273,90 @@ public slots:
             beta = 90 - (180* atan( (z-h) / sqrt(x*x + y*y)   ) / PI);
         else
             beta = 90;
+
+
+        //prüfung:
+        double should = ( (cos(PI*alpha/180) * x + y* sin(PI*alpha/180)) );
+        if((r >= should - 0.05) && (r <= should + 0.05)){
+#if DEBUGING
+            cout << "Errechnetes Alpha+DELTA_ALPHA: " << alpha << " Beta: " << beta << endl;
+#endif
+            return true;
+        }else{
+            QMessageBox::warning(0,"Berechnung der Winkel","Der Winkel Alpha ist bei der Berechnungsprüfung durchgefallen.");
+            cerr << "Der Winkel Alpha ist bei der Prüfung durchgefallen.\n" ;
+            return false;
+        }
+    }
+
+
+    // überprüfen und weitergeben der Drehwinkel
+    bool aim_Koord(Koord const target, int laser=2)
+    {
+        double alpha, beta;
+        if (!calc_Koord(target, alpha, beta))
+            return false;
+
+        if ((alpha > 180) || (alpha < 0)) {
+            QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Position Alpha kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Alpha = " + QString::number(alpha));
+            cerr << "Die Position Alpha kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Alpha = " << alpha << endl;
+            return false;
+        }
         if ((beta > 180) || (beta < 0)){
             QMessageBox::warning(0,"Befehl ist nicht ausführbar","Die Position Beta kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Beta = " + QString::number(beta));
             cerr << "Die Position Beta kann nicht angefahren werden, da die Schrittmotoren nur von 0 bis 180 deg anfahren können. Beta = " << beta << endl;
             return false;
         }
 
+        return aim_deg(rund(alpha), rund(beta), laser);
+    }
 
+    // errechnet die Abweichung (den Fehler) bei den jeweiligen Ziel-Koordinaten
+    bool variation(Koord const target, double &dy, double & dz)
+    {
+        double x = target.x;
+        double y = target.y;
+        //double z = target.z;
+        double h = HIGH;
+        double r = RADIUS;
+        double alpha, beta;
 
-        //prüfung:
-        double should = ( (cos(PI*alpha/180) * x + y* sin(PI*alpha/180)) );
-        if((r >= should - 0.05) && (r <= should + 0.05)){
-        }else{
-            QMessageBox::warning(0,"Berechnung der Winkel","Der Winkel Alpha ist bei der Prüfung durchgefallen. Möchten Sie trotzdem fortfahren?");
-            cerr << "Der Winkel Alpha ist bei der Prüfung durchgefallen.\n" ;
+        if (!calc_Koord(target, alpha, beta))
+            return false;
+
+        if ((alpha > 180) || (alpha < 0)) {
             return false;
         }
-#if DEBUGING
-        cout << "Errechnetes Alpha+DELTA_ALPHA: " << (alpha + DELTA_ALPHA) << " Beta: " << beta << endl;
-#endif
+        if ((beta > 180) || (beta < 0)){
+            return false;
+        }
 
-        return aim_deg(alpha + DELTA_ALPHA, beta, laser);
+        double dy_p = ((r-x*cos((alpha + 1)*PI / 180))/(sin((alpha + 1)*PI / 180)));
+        double dy_m = ((r-x*cos((alpha - 1)*PI / 180))/((sin(alpha - 1)*PI / 180)));
+        cout << "dy_p: " << dy_p << " dy_m: " << dy_m << endl;
+        dy = (dy_p - dy_m) /2;
+        if (dy < 0)
+            dy = -dy;
+
+        double dz_p, dz_m;
+        if ((beta +1) > 90)
+            dz_p = -((sqrt(x*x + y*y))/(tan((180- beta +1)*PI / 180))) + h;
+        else if ((beta +1) < 90)
+            dz_p = (sqrt(x*x + y*y))/(tan((beta +1)*PI / 180)) + h;
+        else
+            dz_p = 90;
+
+        if ((beta -1) > 90)
+            dz_m = -(sqrt(x*x + y*y))/(tan((180- beta -1)*PI / 180)) + h;
+        else if ((beta -1) < 90)
+            dz_m = (sqrt(x*x + y*y))/(tan((beta - 1)*PI / 180)) + h;
+        else
+            dz_m = 90;
+
+        dz = (dz_p - dz_m) /2;
+        if (dz < 0)
+            dz = -dz;
+        return true;
     }
 
     // löst ein Signal aus, welches die Drehwinkel im entsprechenden Format an den Moskito sendet

@@ -11,7 +11,7 @@ void aim(int alpha, int beta, bool laser, bool drive_on = false)  // Zielwinkel 
   if (!laser)
     drive_on = false;
   else if (!drive_on){
-    laser_switch(false);                                  // Während der Drehung wird der Laser aus
+    laser_switch(false);                                // Während der Drehung wird der Laser aus
   }
   int pos = alphaServo.read();
   if (pos > alpha){                                     // Langsames (exaktes) Anfahren der Winkel
@@ -105,6 +105,22 @@ void right()
         delay(500);
 }
 
+
+double distance(double temp) // Ultraschall-Abstandssensor | Rückgabewert in cm
+{
+  long double duration;
+  digitalWrite(ULTRA_TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(ULTRA_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(ULTRA_TRIG, LOW);
+
+  duration = pulseIn(ULTRA_ECHO, HIGH);
+  
+  double c = sqrt((1.01/0.72) * 287 * (temp + 273.15)) * 100; // in cm/s
+  return c * duration * 0.000001 / 2;
+}
+
 void servo_usb_runtime()
 {
   /* Daten empfangen */
@@ -147,7 +163,7 @@ void servo_usb_runtime()
           aim(param_.toInt(), param__.toInt(), true, true);
         else
           aim(param_.toInt(), param__.toInt(), false, false);
-        i = i +2;
+        i++;
         break;
 #if ENABLE_MORSE
       case 'm':                                         // bestimmte Nachricht per Morsecode senden
@@ -202,7 +218,7 @@ void servo_usb_runtime()
         Serial.print("#");
         Serial.print(LASER);
         Serial.print("#");
-        Serial.println(ethernet);
+        Serial.print(ethernet);
         break;
       /*case 's':  
         param_ = "";                                    // Passwort abfrage (Verschlüsselt mit Base64)
@@ -229,6 +245,9 @@ void servo_usb_runtime()
         break;
       case 'o':
         ethernet_switch(false);                         // Ethernet ausschalten
+        break;
+      case 'x':
+        Serial.print(int((distance(20) + TO_MIDDLE) * 1000));       // Ultraschall-Abstandssensor abfragen
         break;
       default:
         buffer =0;

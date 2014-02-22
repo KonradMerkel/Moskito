@@ -8,7 +8,7 @@
 #define GUI_ENABLE 1                                // Ermöglicht eine GUI-Unterstützung von Kom_Moskito
 #define ENABLE_MORSE 0                              // ausschalten der Morsefunktionen
 #define CURRENT_POS_TIME 500                       // Zeitintervall des Timers
-#define DEBUGING 0                                 // ermöglicht zusätzliche Ausgabe zum debuggen (noch inaktiv)
+#define DEBUGING 1                                 // ermöglicht zusätzliche Ausgabe zum debuggen (noch inaktiv)
 
 /************************************************************
                         Bibliotheken

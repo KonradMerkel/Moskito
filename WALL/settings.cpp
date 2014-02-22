@@ -28,6 +28,7 @@ settings::settings(QWidget *parent) :
     connect(ui->Btn_up,SIGNAL(clicked()),moskito,SLOT(man_up()));
     connect(ui->Btn_right,SIGNAL(clicked()),moskito,SLOT(man_right()));
     connect(ui->Btn_left,SIGNAL(clicked()),moskito,SLOT(man_left()));
+    connect(ui->Btn_distance,SIGNAL(clicked()),this,SLOT(distance_clicked()));
 }
 
 settings::~settings()
@@ -119,4 +120,21 @@ void settings::ru_clicked()
 
     right = calcKoord_horizontal(alpha);
     buttom = calcKoord_vertikal(alpha,beta);
+}
+
+void settings::distance_clicked()
+{
+    moskito->aim_deg(90,180,0);
+    QTest::qWait(450);
+    double dist;
+    for (int i=0; i<3; i++){
+        QTest::qWait(4);
+        dist = moskito->distance();
+        if (dist >= 0)
+            break;
+    }
+#if DEBUGING
+    cout << "distance: " << dist << endl;
+#endif
+    ui->spinBx_abstand->setValue(dist);
 }
