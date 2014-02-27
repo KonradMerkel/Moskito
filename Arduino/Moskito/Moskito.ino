@@ -46,6 +46,7 @@
 #define JOY_TIME 50                                     // Zeit zwischen den langsamen Joystickkommandos
 #define WEBDUINO_FAVICON_DATA ""			                  // Icon der Webseite
 #define WEBDUINO_FAIL_MESSAGE "<h1>Keine gültige Adresse</h1>"
+#define DHCP 0                                          // Ermöglicht DHCP
 #define PASSWD_POS 45                                    // Speicherstelle des Passwortes (AdminWebSeite) im EEPROM
 
 /*zeitliche Abstände für die Morsebefehle*/
@@ -87,24 +88,9 @@ unsigned long int btn_t = 0;                            // Betriebszeit der letz
 unsigned long int joy_t = 0;                            // Betriebszeit der letzten Joystickbedienung
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};	    // MAC-Adresse des Gerätes
-IPAddress ip(192, 168, 178, 35); 		  	                // für den Fall, dass DHCP nicht funktioniert
+IPAddress ip(192, 168, 178, 35); 		  	                // für den Fall, dass DHCP nicht funktioniert oder deaktiviert ist
 
 String buffer = "";                                     // Buffer für das Empfangen (Serielle Kom.)
-
-/************************************************************
-		Webseite im Programmspreicher
-*************************************************************/
-P(start) = "<HTML><HEAD><TITLE>Moskito</TITLE><META NAME=\"AUTHOR\" CONTENT=\"Konrad Merkel\"></HEAD><BODY LANG=\"de-DE\" DIR=\"LTR\">";
-P(end) = "</BODY></HTML>";
-P(about) = "<H1 STYLE=\"background: transparent\"><FONT FACE=\"DejaVu Sans, sans-serif\">Über das Projekt</FONT></H1><H2 CLASS=\"western\"><FONT COLOR=\"#c5000b\"><FONT FACE=\"Cantarell\">13.12</FONT></FONT></H2><P STYLE=\"margin-bottom: 0cm\"><FONT COLOR=\"#4c4c4c\"><B>Moskito with HTTP</B></FONT>"
-"<BR>Ziel des Projektes ist es ein Mulitifunktionsgerät namens Moskito, bestehend aus mehreren Modulen und einer entsprechenden Software, zu entwickeln. Das dabei entstandene Gerät kann durch mehrschichtige Softwarearchitekturen, einem einfachen Aufbau, sowie mathematischen Beschreibung als Vermessungssystem und Unterhaltungsgerät eingesetzt werden. Der Forschungsschwerpunkt des Projektes liegt vor allem auf der mathematischen Beschreibung und dem Softwaredesign. Hard- und Softwareentwickler: Konrad Merkel</P>"
-"<P STYLE=\"margin-bottom: 0cm\"><BR></P><P STYLE=\"margin-bottom: 0cm\"><A HREF=\"review.html\">Hier</A> geht es weiter zum Geräteüberblick..</P>";
-
-P(admin) = "<H1 STYLE=\"background: transparent\"><FONT FACE=\"DejaVu Sans, sans-serif\">Kontrollzentrum</FONT></H1><H2 CLASS=\"western\"><FONT FACE=\"Cantarell\">Hier können Sie das Gerät steuern</FONT></H2>";
-P(alpha) = "<FORM ACTION=\"review_tabelle.htm\"><TABLE CELLPADDING=0 CELLSPACING=4><TR><TD><P ALIGN=LEFT>Alpha-Servo:</P></TD><TD><P><INPUT TYPE=TEXT NAME=\"alpha\" SIZE=3 MAXLENGTH=3 value=\"";
-P(beta) = "\"></P></TD></TR><TR><TD><P ALIGN=LEFT>Beta-Servo:</P></TD><TD><P><INPUT TYPE=TEXT NAME=\"beta\" SIZE=3 MAXLENGTH=3 value=\"";
-P(laser) = "\"></P></TD></TR><TR><TD><P ALIGN=LEFT>LASER:</P></TD><TD><P><INPUT TYPE=CHECKBOX NAME=\"laser\">";
-P(endOfAdmin) = "</P></TD></TR></TABLE></FORM>";
 
 /************************************************************
                 Modulübergreifende Funktionen
@@ -134,15 +120,19 @@ void ethernet_switch(bool on)                           // aktiviert bzw. deakti
     lcd.print("eingerichtet...");
     lcd.setCursor(0, 3);
     lcd.print("bitte etwas Geduld");
+#if DHCP
     if (Ethernet.begin(mac) == 0) {
       lcd.setCursor(0, 2);
       lcd.print("Kein DHCP");
       lcd.setCursor(0, 3);
       lcd.print("Versuche default IP");
-      delay(500);
+      delay(1000);
       Ethernet.begin(mac, ip);
     }
-    
+#else
+    delay(2000);
+    Ethernet.begin(mac, ip);
+#endif
     webserver.begin();
     
     ip = Ethernet.localIP();
@@ -241,14 +231,14 @@ void btn_runtime()
     alphaServo.write(alphaServo.read()-1);
   }
   if (analogRead(JOYSTICK_BETA) > 900){
-    betaServo.write(betaServo.read()+2);
-  }else if (analogRead(JOYSTICK_BETA) < 30){
     betaServo.write(betaServo.read()-2);
+  }else if (analogRead(JOYSTICK_BETA) < 30){
+    betaServo.write(betaServo.read()+2);
   }else if ((analogRead(JOYSTICK_BETA) > 680) && ((millis() - joy_t) >= JOY_TIME)){
-    betaServo.write(betaServo.read()+1);
+    betaServo.write(betaServo.read()-1);
     joy_t = millis();
   }else if ((analogRead(JOYSTICK_BETA) < 520) && ((millis() - joy_t) >= JOY_TIME)){
-    betaServo.write(betaServo.read()-1);
+    betaServo.write(betaServo.read()+1);
     joy_t = millis();
   }
 }
@@ -258,8 +248,8 @@ void btn_runtime()
  *##                KERNEL (MAIN)             ##*
  *##                                          ##*
  *##                                          ##*
- *##                                          ##*
-*/
+ *##                                          ##*/
+ 
 
 /************************************************************
 		       Initialisierung
