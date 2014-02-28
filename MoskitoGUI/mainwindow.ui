@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>509</height>
+    <width>650</width>
+    <height>479</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -345,7 +345,7 @@
          <item>
           <widget class="QRadioButton" name="radBtn_parableN">
            <property name="enabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="text">
             <string>Wurfparabel einberechnen </string>
@@ -475,8 +475,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>723</width>
-     <height>27</height>
+     <width>650</width>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMoskito">
@@ -529,8 +529,15 @@
     <addaction name="separator"/>
     <addaction name="act_konf"/>
    </widget>
+   <widget class="QMenu" name="menuSpezial">
+    <property name="title">
+     <string>Spezial</string>
+    </property>
+    <addaction name="act_webPasswd"/>
+   </widget>
    <addaction name="menuMoskito"/>
    <addaction name="menuOptionen"/>
+   <addaction name="menuSpezial"/>
    <addaction name="menuAbout"/>
   </widget>
   <action name="act_aim">
@@ -631,6 +638,11 @@
   <action name="act_laser_on_off">
    <property name="text">
     <string>Laser on / off</string>
+   </property>
+  </action>
+  <action name="act_webPasswd">
+   <property name="text">
+    <string>Webpasswort / Webident setzen</string>
    </property>
   </action>
  </widget>

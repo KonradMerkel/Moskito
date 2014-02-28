@@ -242,6 +242,13 @@ public slots:
       }
     }
 
+    // Set das Passwort für den Webzugang. Das Passwort und der Nutzername müssen dazu mit Base64 verschlüsselt werden
+    // Format Nuterdame:Passwort  (z.B. admin:admin --> mit Base64: YWRtaW46YWRtaW4=
+    bool setWebPasswd(QString ident)
+    {
+        return send(QString("p") + ident + QString("#"));
+    }
+
     // fährt die Servos in den Standby-Modus
     // Das heißt: Alpha=90deg ;  Beta=90deg ; Laser aus
     bool standby()

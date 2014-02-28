@@ -47,7 +47,8 @@
 #define WEBDUINO_FAVICON_DATA ""			                  // Icon der Webseite
 #define WEBDUINO_FAIL_MESSAGE "<h1>Keine gültige Adresse</h1>"
 #define DHCP 0                                          // Ermöglicht DHCP
-#define PASSWD_POS 45                                    // Speicherstelle des Passwortes (AdminWebSeite) im EEPROM
+#define PASSWD_POS 80                                   // Speicherstelle des Passwortes (AdminWebSeite) im EEPROM
+#define PASSWD_MAX_LENGTH 45                            // maximale Länge des Passwortes (AdminWebSeite)
 
 /*zeitliche Abstände für die Morsebefehle*/
 #define lang 600
@@ -88,9 +89,10 @@ unsigned long int btn_t = 0;                            // Betriebszeit der letz
 unsigned long int joy_t = 0;                            // Betriebszeit der letzten Joystickbedienung
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};	    // MAC-Adresse des Gerätes
-IPAddress ip(192, 168, 178, 35); 		  	                // für den Fall, dass DHCP nicht funktioniert oder deaktiviert ist
+IPAddress ip(192, 168, 1, 35); 		  	                // für den Fall, dass DHCP nicht funktioniert oder deaktiviert ist
 
 String buffer = "";                                     // Buffer für das Empfangen (Serielle Kom.)
+String local_IP = "";                                   // lokale IP für die Anzeige auf der Monitorring-Webseite
 
 /************************************************************
                 Modulübergreifende Funktionen
@@ -136,6 +138,14 @@ void ethernet_switch(bool on)                           // aktiviert bzw. deakti
     webserver.begin();
     
     ip = Ethernet.localIP();
+    local_IP = "";
+    local_IP += ip[0];
+    local_IP += ".";
+    local_IP += ip[1];
+    local_IP += ".";
+    local_IP += ip[2];
+    local_IP += ".";
+    local_IP += ip[3];
     tricker_ethernet = "IP: ";
     tricker_ethernet += ip[0];
     tricker_ethernet += ".";
@@ -320,6 +330,8 @@ void loop()
   lcd_runtime();
   servo_usb_runtime();
   lcd_runtime();
+  if (ethernet)
+    webserver.processConnection();
   //}
   btn_runtime();
   

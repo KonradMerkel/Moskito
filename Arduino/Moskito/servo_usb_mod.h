@@ -134,6 +134,7 @@ void servo_usb_runtime()
   if (buffer.length() > 0) {
   String param_ = "";
   String param__ = "";
+  char passwd[PASSWD_MAX_LENGTH];
   int i = 1;
 #if MOSKITO_SERIAL_DEBUGGING
   Serial.print("Daten empfangen: ");
@@ -187,18 +188,21 @@ void servo_usb_runtime()
    * password = admin
    * in other words: "YWRtaW46YWRtaW4=" is the Base64 representation of "admin:admin" */
    
-      /*case 'p':                                         // setzt das Passwort für die Webseite
-        for(i=1;i<45;i++){
-          if (buffer[i] != '#')
-            param_ += buffer[i];
-          else
+      case 'p':                                         // setzt das Passwort für die Webseite
+        for(i=1;i<PASSWD_MAX_LENGTH;i++){
+          if (buffer[i] != '#'){
+            passwd[i-1] = buffer[i];
+          }else{
+            passwd[i-1] = '*';
             break;
+          }
         }
-        Serial.println(param_);
-        EEPROM_writeAnything(PASSWD_POS, param_.length());
-        EEPROM_writeAnything(PASSWD_POS + 5, param_.c_str());
+        if (i==PASSWD_MAX_LENGTH)
+          break;
+        if (i>2)
+          EEPROM_writeAnything(PASSWD_POS, passwd);
         i++;
-        break;*/
+        break;
       case '8':                                         // eine Position nach oben fahren (1deg)
         up();
         break;
@@ -219,21 +223,15 @@ void servo_usb_runtime()
         Serial.print(LASER);
         Serial.print("#");
         Serial.print(ethernet);
-        break;
-      /*case 's':  
-        param_ = "";                                    // Passwort abfrage (Verschlüsselt mit Base64)
-        unsigned int length;
-        char passwd;
-        EEPROM_readAnything(PASSWD_POS, length);
-        Serial.println(length);
-        for (int k = 0; k<length; k++){
-          EEPROM_readAnything(PASSWD_POS + k +5, passwd);
-          param_ += passwd;
-          Serial.print(passwd);
-        }
+#if MOSKITO_SERIAL_DEBUGGING
         Serial.println("");
-        Serial.println(param_);
-        break;*/
+#endif
+        break;
+#if MOSKITO_SERIAL_DEBUGGING
+      case 's':
+        Serial.println(isPasswd());
+        break;
+#endif
       case 'f':                                         // Laser anschalten
         laser_switch(true);
         break;
@@ -248,6 +246,9 @@ void servo_usb_runtime()
         break;
       case 'x':
         Serial.print(int((distance(20) + TO_MIDDLE) * 1000));       // Ultraschall-Abstandssensor abfragen
+#if MOSKITO_SERIAL_DEBUGGING
+        Serial.println("");
+#endif
         break;
       default:
         buffer =0;

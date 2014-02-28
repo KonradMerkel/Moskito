@@ -101,6 +101,9 @@ public slots:
     // löscht QList<spezialKoord> komplett
     void sKO_clear();
 
+    // Webpasswort setzen
+    void setWebPasswd();
+
     // öffnet / speichert QList<spezialKoord> *sKO in einer Datei
     // filename wird mit sKO_file abgeglichen
     bool readKOFile(QString filename);

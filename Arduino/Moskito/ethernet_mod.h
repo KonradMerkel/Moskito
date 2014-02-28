@@ -8,9 +8,9 @@
 		Webseite im Programmspreicher
 *************************************************************/
 P(start) = "<HTML><HEAD><TITLE>Moskito</TITLE><META NAME=\"AUTHOR\" CONTENT=\"Konrad Merkel\"></HEAD><BODY LANG=\"de-DE\" DIR=\"LTR\">";
-P(start_admin) = "<HTML><HEAD><TITLE>Moskito</TITLE><META NAME=\"AUTHOR\" CONTENT=\"Konrad Merkel\"><meta http-equiv=\"refresh\" content=\"1\"></HEAD><BODY LANG=\"de-DE\" DIR=\"LTR\">";
+P(start_admin) = "<HTML><HEAD><TITLE>Moskito</TITLE><META NAME=\"AUTHOR\" CONTENT=\"Konrad Merkel\"><meta http-equiv=\"refresh\" content=\"2\"></HEAD><BODY LANG=\"de-DE\" DIR=\"LTR\">";
 P(end) = "</BODY></HTML>";
-P(about) = "<H1 STYLE=\"background: transparent\"><FONT FACE=\"DejaVu Sans, sans-serif\">About Moskito</FONT></H1><H2 CLASS=\"western\"><FONT COLOR=\"#c5000b\"><FONT FACE=\"Cantarell\">14.03</FONT></FONT></H2><P STYLE=\"margin-bottom: 0cm\"><FONT COLOR=\"#4c4c4c\"><B>Moskito mit HTTP</B></FONT>"
+P(about) = "<H1 STYLE=\"background: transparent\"><FONT FACE=\"DejaVu Sans, sans-serif\">About Moskito</FONT></H1><H2 CLASS=\"western\"><FONT COLOR=\"#c5000b\"><FONT FACE=\"Cantarell\">14.03</FONT></FONT></H2><P STYLE=\"margin-bottom: 0cm\"><FONT COLOR=\"#4c4c4c\"><B>Moskito über HTTP</B></FONT>"
 "<BR><P>Moskito bezeichnet ein Multifunktionsgerät bestehend aus zwei Servomotoren, einem Laser und weiteren Sensoren und Aktoren. Gesteuert wird die Hardware durch einen Mikrocontroller. Das Gerät kann somit zum Beispiel als Vermessungs- und Markierungssystem für Hand- und Heimwerker werden.</P>"
 "<P>Das besondere an diesem Projekt ist, dass von der Idee über die Umsetzung bis hin zum fertigen Produkt die gesamte Entwicklung in einer Hand liegt. Das betrifft<BR>• die Mathematik,<BR>• die Fertigung der Holzkomponenten,<BR>• die Schaltkreise,<BR>• die Programmierung auf mehreren Plattformen in mehreren Schichten (layered system structure) und<BR>• ausführlichen Tests.</P>"
 "<P>Für viele Anwendungsgebiete des Moskito, wie zum Beispiel als Ziel- und Vermessungssystem, benötigt man eine Reihe von Gleichungen und Formel, die die Koordinaten in Drehwinkel der Servos umrechnen können. Genutzt wird dazu ein abstraktes mathematisches Modell auf Basis der Analysis. Die entsprechenden Formeln sind in der <A HREF=\"https://github.com/KonradMerkel/Moskito\">schriftlichen Arbeit</A> genau erläutert.<\P>"
@@ -53,16 +53,27 @@ void aboutCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)  
   }
 }
 
-/*String isPasswd()
+String isPasswd()
 {
-  String passwd;
+  char passwd[PASSWD_MAX_LENGTH];
+  String passwd_ = "";
   EEPROM_readAnything(PASSWD_POS, passwd);
-  return passwd;
-}*/
+  for (int k = 0; k<PASSWD_MAX_LENGTH; k++){
+    passwd_ += passwd[k];
+    if (passwd[k+1] == '*'){
+      break;
+    }
+  }
+  
+  return passwd_;
+}
 
 void adminCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)  // Admin-Seite
 {
-  if (server.checkCredentials("YWRtaW46YWRtaW4=")){
+  String passwd = isPasswd();
+  char credentials [passwd.length()+1];
+  passwd.toCharArray(credentials, passwd.length()+1);
+  if (server.checkCredentials(credentials)){       // Default: "YWRtaW46YWRtaW4="
     server.httpSuccess();
     #if MOSKITO_SERIAL_DEBUGGING
     Serial.println("Anmeldung in AdminCmd erfolgreich");
@@ -76,15 +87,6 @@ void adminCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)  
       server.printP(beta);
       server.print(betaServo.read());
       server.printP(ip_html);
-      ip = Ethernet.localIP();
-      String local_IP = "";
-      local_IP += ip[0];
-      local_IP += ".";
-      local_IP += ip[1];
-      local_IP += ".";
-      local_IP += ip[2];
-      local_IP += ".";
-      local_IP += ip[3];
       server.print(local_IP);
       server.printP(laser);
       if (LASER)

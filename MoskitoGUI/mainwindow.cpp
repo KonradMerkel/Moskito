@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->act_rm,SIGNAL(triggered()),this,SLOT(rmKO()));
   connect(ui->act_fire,SIGNAL(triggered()),this,SLOT(fire()));
   connect(ui->act_laser_on_off,SIGNAL(triggered()),this,SLOT(laser()));
+  connect(ui->act_webPasswd,SIGNAL(triggered()),this,SLOT(setWebPasswd()));
 
   connect(dialog_rec,SIGNAL(rec_start(bool)),this,SLOT(REC(bool)));
   connect(dialog_rec,SIGNAL(sendToMoskito(QString)),this,SIGNAL(sendToMoskito(QString)));
@@ -117,6 +118,17 @@ void MainWindow::about()
                                                                                "Der Forschungsschwerpunkt des Projektes liegt vor allem auf der mathematischen Beschreibung und dem Softwaredesign. "
                                                                                 "Hard- und Softwareentwickler: Konrad Merkel"));
 
+}
+
+void MainWindow::setWebPasswd()
+{
+    bool ok;
+    QString passwd = QInputDialog::getText(this,"Webident setzen","Passwort und Nutzername bitte in folgendem Format UND in Base64 verschluesselt eingeben\nFormat: Nutzername:Passwort (z.B. admin:admin --> mit Base64: YWRtaW46YWRtaW4=)", QLineEdit::Normal, "YWRtaW46YWRtaW4=", &ok);
+
+    if (!ok || passwd.isEmpty())                                                // keinen Port für die serielle Kommunikation
+        return ;
+
+    moskito->setWebPasswd(passwd);
 }
 
 void MainWindow::aboutQt()
