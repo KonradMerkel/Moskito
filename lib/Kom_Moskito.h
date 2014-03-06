@@ -15,10 +15,10 @@
 *************************************************************/
 #define PI 3.1415926535
 #ifndef RADIUS
-#define RADIUS 6   /* UNGENAU */                                 // Radius zwischen Laser und Drehachse
+#define RADIUS 5.7                                  // Radius zwischen Laser und Drehachse
 #endif
 #ifndef HIGH
-#define HIGH 13.27 /* UNGENAU */                                 // Höhe der Drehachse
+#define HIGH 14.8857                                // Höhe der Drehachse
 #endif
 #ifndef BAUD_RATE
 #define BAUD_RATE BAUD115200                        // Baudrate der seriellen Verbindung
@@ -27,10 +27,10 @@
 #define SERIAL_INIT_TIME 1500                       // Zeit um eine Verbindung zum Moskito herzustellen
 #endif
 #ifndef TIME_OUT
-#define TIME_OUT 1000                                 // Timeout für das initialisieren des Gerätes nachdem SERIAL_INIT_TIME verstrichen ist
+#define TIME_OUT 1000                               // Timeout für das initialisieren des Gerätes nachdem SERIAL_INIT_TIME verstrichen ist
 #endif
 #ifndef DELTA_ALPHA
-#define DELTA_ALPHA 0   /* UNGENAU */                            // Korrekturfaktor des Alphaservos, aufgrund der Einspannung
+#define DELTA_ALPHA 3.6667                          // Korrekturfaktor des Alphaservos, aufgrund der Einspannung
 #endif
 #ifndef ENABLE_MORSE
 #define ENABLE_MORSE 1                              // ein- bzw ausschalten der Morsefunktionen
@@ -271,7 +271,7 @@ public slots:
             return false;
         }
 
-        alpha = 2* ((180 * atan((y+ sqrt(x*x+y*y-r * r))/(x+r))) / PI) + DELTA_ALPHA; // es gibt eine 2. Lösung!
+        alpha = 2* ((180 * atan((y+ sqrt(x*x+y*y-r * r))/(x+r))) / PI) - DELTA_ALPHA; // es gibt eine 2. Lösung!
 
 
         if (z < h)
@@ -286,7 +286,7 @@ public slots:
         double should = ( (cos(PI*alpha/180) * x + y* sin(PI*alpha/180)) );
         if((r >= should - 0.05) && (r <= should + 0.05)){
 #if DEBUGING
-            cout << "Errechnetes Alpha+DELTA_ALPHA: " << alpha << " Beta: " << beta << endl;
+            cout << "Errechnetes Alpha-DELTA_ALPHA: " << alpha << " Beta: " << beta << endl;
 #endif
             return true;
         }else{

@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this); // GUI erstellen
   dialog_man  = new Manual;
   dialog_rec  = new Dialog_rec;
-  dialog_konf = new Konf;
   sKO = new QList<spezialKoord>;
   sKO_file = new QFile;
   moskito = new Kom_Moskito;
@@ -27,9 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
       exit(1);
 
   moskito->init(item);
-
-  connect(this,SIGNAL(currentPos(int,int)),dialog_konf, SLOT(currentAlphaBeta(int,int)));
-  connect(ui->act_konf,SIGNAL(triggered()),dialog_konf,SLOT(show()));
 
   connect(dialog_man,SIGNAL(sendToMoskito(QString)), this, SIGNAL(sendToMoskito(QString)));
   connect(this,SIGNAL(sendToMoskito(QString)), moskito, SLOT(send(QString)));
@@ -52,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->act_fire,SIGNAL(triggered()),this,SLOT(fire()));
   connect(ui->act_laser_on_off,SIGNAL(triggered()),this,SLOT(laser()));
   connect(ui->act_webPasswd,SIGNAL(triggered()),this,SLOT(setWebPasswd()));
+  connect(ui->act_morse,SIGNAL(triggered()),this,SLOT(morse()));
 
   connect(dialog_rec,SIGNAL(rec_start(bool)),this,SLOT(REC(bool)));
   connect(dialog_rec,SIGNAL(sendToMoskito(QString)),this,SIGNAL(sendToMoskito(QString)));
@@ -69,7 +66,6 @@ MainWindow::~MainWindow(){
     delete moskito;
     delete sKO;
     delete dialog_rec;
-    delete dialog_konf;
     delete dialog_man;
     delete ui;
 }
@@ -84,10 +80,10 @@ void MainWindow::aim(int laser){
         target.y = ui->doubleSpinBox_y->value();
         target.z = ui->doubleSpinBox_z->value();
         moskito->aim_Koord(target,laser);
-        double dy, dz;
+        /*double dy, dz;
         if (moskito->variation(target, dy, dz)){
             QMessageBox::warning(this,"Fehlerberechnung des Zielvorgangs", QString("Der horizontale Fehler dy liegt bei ") + QString::number(dy) + QString("\nDer vertikale Fehler dz liegt bei ") + QString::number(dz));
-        }
+        }*/
 
     }else if (ui->gBox_man->isChecked()) {
         moskito->aim_deg(ui->spinBox_alpha->value(), ui->spinBox_beta->value(),laser);
@@ -128,7 +124,19 @@ void MainWindow::setWebPasswd()
     if (!ok || passwd.isEmpty())                                                // keinen Port für die serielle Kommunikation
         return ;
 
-    moskito->setWebPasswd(passwd);
+    if (!moskito->setWebPasswd(passwd))
+        QMessageBox::warning(this,"Fehler", "Der Steuerbefehl konnte nicht uebermittelt werden.");
+}
+
+void MainWindow::morse()
+{
+    bool ok;
+    QString txt = QInputDialog::getText(this,"Morsenachricht senden","Bitte geben Sie die Nachricht ein, die Sie morsen möchten.", QLineEdit::Normal, "", &ok);
+
+    if (!ok || txt.isEmpty())
+        return ;
+    if (!moskito->morse(txt))
+        QMessageBox::warning(this,"Fehler", "Der Steuerbefehl konnte nicht uebermittelt werden.");
 }
 
 void MainWindow::aboutQt()
@@ -149,9 +157,6 @@ void MainWindow::aboutQt()
  {
      QSettings settings(QCoreApplication::organizationName(),QCoreApplication::applicationName());
 
-     dialog_konf->setRadius(settings.value("radius",RADIUS).toDouble());
-     dialog_konf->setHigh(settings.value("high",HIGH).toDouble());
-     dialog_konf->setV(settings.value("v", DEFAULT_V).toDouble());
      readKOFile((settings.value("sKO_file",QString(QDir::homePath()) + QString("/target.aim")).toString()));
      openKO(0);
  }
@@ -161,10 +166,7 @@ void MainWindow::aboutQt()
      QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
      settings.clear();
 
-     settings.setValue("radius",dialog_konf->getRadius());
-     settings.setValue("high",dialog_konf->getHigh());
      settings.setValue("sKO_file",sKO_file->fileName());
-     settings.setValue("v",dialog_konf->getV());
  }
 
  void MainWindow::saveKO()

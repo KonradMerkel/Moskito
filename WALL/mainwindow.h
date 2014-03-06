@@ -5,7 +5,6 @@
                        Konfiguration
 *************************************************************/
 #define DEBUGING 0                                  // ermöglicht zusätzliche Ausgabe zum debuggen
-#define DELTA_ALPHA 0                               // Korrekturfaktor des Alphaservos, aufgrund der Einspannung
 #define GUI_ENABLE 1                                // Ermöglicht eine GUI-Unterstützung von Kom_Moskito
 #define ENABLE_MORSE 0                              // ausschalten der Morsefunktionen
 
@@ -50,6 +49,7 @@ public slots:
     void horizontalLine();                          // zeichnet einzelne Punkte einer horizontalen Linie
     void vertikalLine();                            // zeichnet einzelne Punkte einer vertikalen Linie
 
+    void endofsettings();                           // Vermisst die Wand, nachdem die Einrichtung beendet ist
 private:
     int hLine_n;                                    // Anzahl der schon gezeichneten Punkte einer Linie
     int vLine_n;

@@ -6,398 +6,415 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>811</width>
-    <height>491</height>
+    <width>803</width>
+    <height>527</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>WALL</string>
+   <string>WALL - Vermessungssystem</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="0">
-     <widget class="QGroupBox" name="gBx_horizontal">
-      <property name="title">
-       <string>horizontale Linie</string>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="2" column="1">
-        <widget class="QComboBox" name="cBx_vertikal_h">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="gBx_horizontal">
+        <property name="title">
+         <string>horizontale Linie</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="2" column="1">
+          <widget class="QComboBox" name="cBx_vertikal_h">
+           <item>
+            <property name="text">
+             <string>von oben</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>von unten</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="7" column="0" colspan="3">
+          <widget class="QPushButton" name="Btn_horizontal">
+           <property name="text">
+            <string>Punkte anzeichnen</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Horizontal(ersterPunkt)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="cBx_horiz_h">
+           <item>
+            <property name="text">
+             <string>von rechts</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>von links</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Vertikal</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Anzahl der Punkte</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QDoubleSpinBox" name="spinBx_horiz_h">
+           <property name="suffix">
+            <string>cm</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QSpinBox" name="spinBx_n_h"/>
+         </item>
+         <item row="5" column="2">
+          <widget class="QDoubleSpinBox" name="spinBx_abst_h">
+           <property name="suffix">
+            <string>cm</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QDoubleSpinBox" name="spinBx_vertikal_h">
+           <property name="suffix">
+            <string>cm</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Abstand zwischen den Punkten</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QCheckBox" name="cBx_ganzeWand_h">
+           <property name="text">
+            <string>Punkt auf die gesamte Wand verteilen</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QGroupBox" name="gBx_vertikal">
+        <property name="title">
+         <string>vertikale Linie</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Vertikal (erster Punkt)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="cBx_vertikal_v">
+           <item>
+            <property name="text">
+             <string>von oben</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>von unten</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="3">
+          <widget class="QPushButton" name="Btn_vertikal">
+           <property name="text">
+            <string>Punkte anzeichnen</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Horizontal</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="cBx_horiz_v">
+           <item>
+            <property name="text">
+             <string>von rechts</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>von links</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QDoubleSpinBox" name="spinBx_horiz_v">
+           <property name="suffix">
+            <string>cm</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QDoubleSpinBox" name="spinBx_abst_v">
+           <property name="suffix">
+            <string>cm</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QDoubleSpinBox" name="spinBx_vertikal_v">
+           <property name="suffix">
+            <string>cm</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Abstand zwischen den Punkten</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QSpinBox" name="spinBx_n_v"/>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Anzahl der Punkte</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="3">
+          <widget class="QCheckBox" name="cBx_ganzeWand_v">
+           <property name="text">
+            <string>Punkt auf die gesamte Wand verteilen</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QGroupBox" name="gBx_single">
+        <property name="title">
+         <string>einzelne Punkte</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Horizontal</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="cBx_vertikal">
+           <item>
+            <property name="text">
+             <string>von oben</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>von unten</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QDoubleSpinBox" name="spinBx_vertikal">
+           <property name="suffix">
+            <string>cm</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="cBx_horiz">
+           <item>
+            <property name="text">
+             <string>von rechts</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>von links</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QDoubleSpinBox" name="spinBx_horiz">
+           <property name="suffix">
+            <string>cm</string>
+           </property>
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Vertikal</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="3">
+          <widget class="QPushButton" name="Btn_single">
+           <property name="text">
+            <string>Anzeichnen</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Sonstiges</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <property name="text">
-           <string>von oben</string>
-          </property>
+          <widget class="QPushButton" name="Btn_middle">
+           <property name="text">
+            <string>Mittelpunkt anzeigen lassen</string>
+           </property>
+          </widget>
          </item>
          <item>
-          <property name="text">
-           <string>von unten</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="7" column="0" colspan="3">
-        <widget class="QPushButton" name="Btn_horizontal">
-         <property name="text">
-          <string>Ersten Punkt anzeichnen</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Horizontal(ersterPunkt)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="cBx_horiz_h">
-         <item>
-          <property name="text">
-           <string>von rechts</string>
-          </property>
+          <widget class="QPushButton" name="Btn_aboutQt">
+           <property name="text">
+            <string>about Qt</string>
+           </property>
+          </widget>
          </item>
          <item>
-          <property name="text">
-           <string>von links</string>
-          </property>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
          </item>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Vertikal</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Anzahl der Punkte</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_horiz_h">
-         <property name="suffix">
-          <string>cm</string>
-         </property>
-         <property name="decimals">
-          <number>2</number>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QSpinBox" name="spinBx_n_h"/>
-       </item>
-       <item row="5" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_abst_h">
-         <property name="suffix">
-          <string>cm</string>
-         </property>
-         <property name="decimals">
-          <number>2</number>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_vertikal_h">
-         <property name="suffix">
-          <string>cm</string>
-         </property>
-         <property name="decimals">
-          <number>2</number>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="2">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Abstand zwischen den Punkten</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0" colspan="2">
-        <widget class="QCheckBox" name="cBx_ganzeWand_h">
-         <property name="text">
-          <string>Punkt auf die gesamte Wand verteilen</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </item>
-    <item row="0" column="1">
-     <widget class="QGroupBox" name="gBx_vertikal">
-      <property name="title">
-       <string>vertikale Linie</string>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Vertikal (erster Punkt)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="cBx_vertikal_v">
-         <item>
-          <property name="text">
-           <string>von oben</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>von unten</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="6" column="0" colspan="3">
-        <widget class="QPushButton" name="Btn_vertikal">
-         <property name="text">
-          <string>Ersten Punkt anzeichnen</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Horizontal</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="cBx_horiz_v">
-         <item>
-          <property name="text">
-           <string>von rechts</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>von links</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_horiz_v">
-         <property name="suffix">
-          <string>cm</string>
-         </property>
-         <property name="decimals">
-          <number>2</number>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_abst_v">
-         <property name="suffix">
-          <string>cm</string>
-         </property>
-         <property name="decimals">
-          <number>2</number>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_vertikal_v">
-         <property name="suffix">
-          <string>cm</string>
-         </property>
-         <property name="decimals">
-          <number>2</number>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Abstand zwischen den Punkten</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QSpinBox" name="spinBx_n_v"/>
-       </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Anzahl der Punkte</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="3">
-        <widget class="QCheckBox" name="cBx_ganzeWand_v">
-         <property name="text">
-          <string>Punkt auf die gesamte Wand verteilen</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QGroupBox" name="gBx_single">
-      <property name="title">
-       <string>einzelne Punkte</string>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Horizontal</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="cBx_vertikal">
-         <item>
-          <property name="text">
-           <string>von oben</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>von unten</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_vertikal">
-         <property name="suffix">
-          <string>cm</string>
-         </property>
-         <property name="decimals">
-          <number>2</number>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="cBx_horiz">
-         <item>
-          <property name="text">
-           <string>von rechts</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>von links</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QDoubleSpinBox" name="spinBx_horiz">
-         <property name="suffix">
-          <string>cm</string>
-         </property>
-         <property name="decimals">
-          <number>2</number>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Vertikal</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="3">
-        <widget class="QPushButton" name="Btn_single">
-         <property name="text">
-          <string>Anzeichnen</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QGroupBox" name="groupBox">
-      <property name="title">
-       <string>Sonstiges</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QPushButton" name="Btn_middle">
-         <property name="text">
-          <string>Mittelpunkt anzeigen lassen</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="Btn_aboutQt">
-         <property name="text">
-          <string>about Qt</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="2" column="0">
+    <item>
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -410,12 +427,49 @@
       </property>
      </spacer>
     </item>
-    <item row="3" column="0" colspan="2">
-     <widget class="QLabel" name="lb_fail">
-      <property name="text">
-       <string>FAIL</string>
-      </property>
-     </widget>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="lb_fail">
+        <property name="text">
+         <string>FAIL</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="lb_wand">
+        <property name="text">
+         <string>Abmessung der Wand</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -424,7 +478,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>811</width>
+     <width>803</width>
      <height>27</height>
     </rect>
    </property>
@@ -449,12 +503,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>215</x>
-     <y>222</y>
+     <x>241</x>
+     <y>255</y>
     </hint>
     <hint type="destinationlabel">
-     <x>370</x>
-     <y>184</y>
+     <x>403</x>
+     <y>223</y>
     </hint>
    </hints>
   </connection>
@@ -465,12 +519,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>632</x>
-     <y>207</y>
+     <x>783</x>
+     <y>256</y>
     </hint>
     <hint type="destinationlabel">
-     <x>706</x>
-     <y>184</y>
+     <x>783</x>
+     <y>224</y>
     </hint>
    </hints>
   </connection>
@@ -481,8 +535,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>180</x>
-     <y>217</y>
+     <x>206</x>
+     <y>255</y>
     </hint>
     <hint type="destinationlabel">
      <x>342</x>
@@ -492,17 +546,17 @@
   </connection>
   <connection>
    <sender>cBx_ganzeWand_v</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>spinBx_horiz_v</receiver>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBx_vertikal_v</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>571</x>
-     <y>216</y>
+     <x>653</x>
+     <y>242</y>
     </hint>
     <hint type="destinationlabel">
-     <x>697</x>
-     <y>85</y>
+     <x>713</x>
+     <y>132</y>
     </hint>
    </hints>
   </connection>

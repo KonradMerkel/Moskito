@@ -10,19 +10,16 @@ TEMPLATE = app
 SOURCES += ../main.cpp\
         ../mainwindow.cpp \
     ../dialog_rec.cpp \
-    ../manual.cpp \
-    ../konf.cpp
+    ../manual.cpp
 
 HEADERS  += ../mainwindow.h \
     ../dialog_rec.h \
     ../manual.h \
-    ../konf.h \
     ../../lib/Kom_Moskito.h
 
 FORMS    += ../mainwindow.ui \
     ../dialog_rec.ui \
-    ../manual.ui \
-    ../konf.ui
+    ../manual.ui
 
 CONFIG   += qextserialport
 

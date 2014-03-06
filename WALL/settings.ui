@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>371</width>
+    <width>392</width>
     <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Einrichten</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -144,6 +144,9 @@
       </item>
       <item row="0" column="2">
        <widget class="QPushButton" name="Btn_ro">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>rechts oben</string>
         </property>
@@ -161,6 +164,9 @@
       </item>
       <item row="0" column="0">
        <widget class="QPushButton" name="Btn_lo">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>links oben</string>
         </property>
@@ -207,13 +213,23 @@
            <number>2</number>
           </property>
           <property name="minimum">
-           <double>0.010000000000000</double>
+           <double>0.000000000000000</double>
           </property>
           <property name="maximum">
            <double>99999.000000000000000</double>
           </property>
           <property name="singleStep">
-           <double>0.100000000000000</double>
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="Btn_distance">
+          <property name="text">
+           <string>Ultraschall</string>
           </property>
          </widget>
         </item>
@@ -234,6 +250,9 @@
       </item>
       <item row="3" column="0">
        <widget class="QPushButton" name="Btn_lu">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>links unten</string>
         </property>
@@ -257,6 +276,9 @@
       </item>
       <item row="3" column="2">
        <widget class="QPushButton" name="Btn_ru">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>rechts unten</string>
         </property>
@@ -382,8 +404,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>262</x>
-     <y>45</y>
+     <x>367</x>
+     <y>64</y>
     </hint>
     <hint type="destinationlabel">
      <x>53</x>
@@ -402,8 +424,8 @@
      <y>57</y>
     </hint>
     <hint type="destinationlabel">
-     <x>297</x>
-     <y>362</y>
+     <x>367</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -414,8 +436,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>276</x>
-     <y>353</y>
+     <x>367</x>
+     <y>235</y>
     </hint>
     <hint type="destinationlabel">
      <x>271</x>
@@ -430,12 +452,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>102</x>
-     <y>364</y>
+     <x>116</x>
+     <y>235</y>
     </hint>
     <hint type="destinationlabel">
-     <x>316</x>
-     <y>372</y>
+     <x>367</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -446,12 +468,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>263</x>
-     <y>359</y>
+     <x>367</x>
+     <y>235</y>
     </hint>
     <hint type="destinationlabel">
-     <x>78</x>
-     <y>371</y>
+     <x>104</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -462,8 +484,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>357</y>
+     <x>101</x>
+     <y>235</y>
     </hint>
     <hint type="destinationlabel">
      <x>68</x>
@@ -482,8 +504,8 @@
      <y>63</y>
     </hint>
     <hint type="destinationlabel">
-     <x>56</x>
-     <y>379</y>
+     <x>82</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>

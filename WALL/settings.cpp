@@ -29,11 +29,27 @@ settings::settings(QWidget *parent) :
     connect(ui->Btn_right,SIGNAL(clicked()),moskito,SLOT(man_right()));
     connect(ui->Btn_left,SIGNAL(clicked()),moskito,SLOT(man_left()));
     connect(ui->Btn_distance,SIGNAL(clicked()),this,SLOT(distance_clicked()));
+    connect(ui->spinBx_abstand,SIGNAL(valueChanged(double)),this, SLOT(enable_all()));
 }
 
 settings::~settings()
 {
     delete ui;
+}
+
+void settings::enable_all()
+{
+    if (ui->spinBx_abstand->value() != 0.0){
+        ui->Btn_lo->setEnabled(true);
+        ui->Btn_ro->setEnabled(true);
+        ui->Btn_lu->setEnabled(true);
+        ui->Btn_ru->setEnabled(true);
+    }else{
+        ui->Btn_lo->setEnabled(false);
+        ui->Btn_ro->setEnabled(false);
+        ui->Btn_lu->setEnabled(false);
+        ui->Btn_ru->setEnabled(false);
+    }
 }
 
 double settings::getAbstand()
@@ -133,8 +149,9 @@ void settings::distance_clicked()
         if (dist >= 0)
             break;
     }
+    moskito->aim_deg(90,90,1);
 #if DEBUGING
     cout << "distance: " << dist << endl;
 #endif
-    ui->spinBx_abstand->setValue(dist);
+    ui->spinBx_abstand->setValue(dist - TO_MIDDLE);
 }

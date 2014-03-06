@@ -10,10 +10,18 @@ void aim(int alpha, int beta, bool laser, bool drive_on = false)  // Zielwinkel 
 {
   if (!laser)
     drive_on = false;
-  else if (!drive_on){
+  
+  if (!drive_on){
     laser_switch(false);                                // Während der Drehung wird der Laser aus
   }
   int pos = alphaServo.read();
+  if (((pos + 1) == alpha) || ((pos - 1) == alpha)){
+    if (alpha + 10 > 180)
+      aim(alpha - 10, beta, laser,drive_on);
+    else
+      aim(alpha + 10, beta, laser,drive_on);
+    pos = alphaServo.read();
+  }
   if (pos > alpha){                                     // Langsames (exaktes) Anfahren der Winkel
     for(; pos >= alpha; pos--){
       alphaServo.write(pos);
@@ -27,6 +35,13 @@ void aim(int alpha, int beta, bool laser, bool drive_on = false)  // Zielwinkel 
   }
   
   pos = betaServo.read();
+  if (((pos + 1) == beta) || ((pos - 1) == beta)){
+    if (beta + 10 > 180)
+      aim(alpha, beta  - 10, laser,drive_on);
+    else
+      aim(alpha, beta + 10, laser,drive_on);
+    pos = betaServo.read();
+  }
   if (pos > beta){
     for(; pos >= beta; pos--){
       betaServo.write(pos);

@@ -39,11 +39,11 @@
 #define MANUAL_DTIME 6					                        // Zeit für das Füllen des Buffers pro Char
 							                                          // (Serielle Kom.) und Zeit für das Ausrichten der
 							                                          // Servomotoren pro deg
-#define TO_MIDDLE 0.4 /* ungenau */                                 // Abstand zwischen Ultraschallsensor und Drehachse des Betaservos (in cm)
+#define TO_MIDDLE 2.65                                  // Abstand zwischen Ultraschallsensor und Drehachse des Betaservos (in cm)
 #define CLEAR_TIME 8000 				                        // Zeit nachdem die Oberfläche neu geschrieben wird
 #define TRICKER_TIME 800 				                        // Zeit zwischen dem Rücken des Trickers.
 #define BTN_TIME 200					                          // Zeit zwischen den Button-Abfragen
-#define JOY_TIME 50                                     // Zeit zwischen den langsamen Joystickkommandos
+#define JOY_TIME 200                                    // Zeit zwischen den langsamen Joystickkommandos
 #define WEBDUINO_FAVICON_DATA ""			                  // Icon der Webseite
 #define WEBDUINO_FAIL_MESSAGE "<h1>Keine gültige Adresse</h1>"
 #define DHCP 0                                          // Ermöglicht DHCP
@@ -231,9 +231,9 @@ void btn_runtime()
     btn_t = millis();
   }
   if (analogRead(JOYSTICK_ALPHA) > 900){
-    alphaServo.write(alphaServo.read()+2);
+    alphaServo.write(alphaServo.read()+1);
   }else if (analogRead(JOYSTICK_ALPHA) < 30){
-    alphaServo.write(alphaServo.read()-2);
+    alphaServo.write(alphaServo.read()-1);
   }else if ((analogRead(JOYSTICK_ALPHA) > 680) && ((millis() - joy_t) >= JOY_TIME)){
     alphaServo.write(alphaServo.read()+1);
     joy_t = millis();
@@ -241,14 +241,14 @@ void btn_runtime()
     alphaServo.write(alphaServo.read()-1);
   }
   if (analogRead(JOYSTICK_BETA) > 900){
-    betaServo.write(betaServo.read()-2);
+    betaServo.write(betaServo.read()+1);
   }else if (analogRead(JOYSTICK_BETA) < 30){
-    betaServo.write(betaServo.read()+2);
-  }else if ((analogRead(JOYSTICK_BETA) > 680) && ((millis() - joy_t) >= JOY_TIME)){
     betaServo.write(betaServo.read()-1);
+  }else if ((analogRead(JOYSTICK_BETA) > 680) && ((millis() - joy_t) >= JOY_TIME)){
+    betaServo.write(betaServo.read()+1);
     joy_t = millis();
   }else if ((analogRead(JOYSTICK_BETA) < 520) && ((millis() - joy_t) >= JOY_TIME)){
-    betaServo.write(betaServo.read()+1);
+    betaServo.write(betaServo.read()-1);
     joy_t = millis();
   }
 }

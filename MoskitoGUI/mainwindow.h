@@ -6,9 +6,9 @@
 *************************************************************/
 #define DEFAULT_V 0                                 // Voreingestellte Geschwindigkeit eines möglichen Geschosses
 #define GUI_ENABLE 1                                // Ermöglicht eine GUI-Unterstützung von Kom_Moskito
-#define ENABLE_MORSE 0                              // ausschalten der Morsefunktionen
+#define ENABLE_MORSE 1                              // ausschalten der Morsefunktionen
 #define CURRENT_POS_TIME 500                       // Zeitintervall des Timers
-#define DEBUGING 1                                 // ermöglicht zusätzliche Ausgabe zum debuggen (noch inaktiv)
+#define DEBUGING 0                                 // ermöglicht zusätzliche Ausgabe zum debuggen (noch inaktiv)
 
 /************************************************************
                         Bibliotheken
@@ -32,7 +32,6 @@ using namespace std;
 #include "qextserialport.h"
 #include "dialog_rec.h"
 #include "manual.h"
-#include "konf.h"
 
 
 /************************************************************
@@ -104,6 +103,9 @@ public slots:
     // Webpasswort setzen
     void setWebPasswd();
 
+    // morsen
+    void morse();
+
     // öffnet / speichert QList<spezialKoord> *sKO in einer Datei
     // filename wird mit sKO_file abgeglichen
     bool readKOFile(QString filename);
@@ -140,7 +142,6 @@ private:
     Ui::MainWindow *ui;                             // graphische Oberfläche des Hauptfensters
     Dialog_rec *dialog_rec;                         // Aufnahmefenster
     Manual *dialog_man;                             // Manuelle Bedinung (Fenster)
-    Konf *dialog_konf;                              // Konfigurationsfenster
 
     Kom_Moskito *moskito;                           // Kommunikation mit Moskito
     QList<spezialKoord> *sKO;                       // Gespeicherte Koordinaten für den Schnellzugriff
