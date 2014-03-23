@@ -1,5 +1,5 @@
 /*
-** Moskito 1.1
+** Moskito
 ***************************************************************
 ** (c) Konrad Merkel
 ** 13. Dezember 2013 (Vorgängerversion: 5. Juli 2013)
@@ -16,6 +16,7 @@
 /************************************************************
 			Konfiguration
 *************************************************************/
+#define PI 3.1415926535
 #define MOSKITO_SERIAL_DEBUGGING 0                      // für Debugging-Modus auf 1 setzen
 #define WEBDUINO_SERIAL_DEBUGGING 0                     // für Debugging-Modus auf 1 setzen
                                                         // Im Debugging-Modus kann die Komunikation mit
@@ -39,7 +40,6 @@
 #define MANUAL_DTIME 6					                        // Zeit für das Füllen des Buffers pro Char
 							                                          // (Serielle Kom.) und Zeit für das Ausrichten der
 							                                          // Servomotoren pro deg
-#define TO_MIDDLE 2.65                                  // Abstand zwischen Ultraschallsensor und Drehachse des Betaservos (in cm)
 #define CLEAR_TIME 8000 				                        // Zeit nachdem die Oberfläche neu geschrieben wird
 #define TRICKER_TIME 800 				                        // Zeit zwischen dem Rücken des Trickers.
 #define BTN_TIME 200					                          // Zeit zwischen den Button-Abfragen
@@ -56,9 +56,16 @@
 #define EndOfChar 750
 #define EndOfWord 1000
 
+/*Ultaschallsensor*/
+#define ULTRA_DIST 2.8                                  // Distance zwischen Sender und Empfänger (in cm)
+#define TEMPERATUR 19.7
+#define TO_MIDDLE 2.65                                  // Abstand zwischen Ultraschallsensor und Drehachse des Betaservos (in cm)
+#define AVG_NUM 6
+#define ULTRA_STAT_RANGE 25                            // zulässige Spannweite der Ultraschallmessungen in cm
 /************************************************************
 			Bibliotheken
 *************************************************************/
+#include <math.h>
 #include <Servo.h>
 #include <LiquidCrystal.h>
 #include <SPI.h>

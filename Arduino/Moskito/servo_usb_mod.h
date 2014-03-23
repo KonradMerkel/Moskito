@@ -120,21 +120,69 @@ void right()
         delay(500);
 }
 
-
-double distance(double temp) // Ultraschall-Abstandssensor | Rückgabewert in cm
+long double distance_single(double temp) // Ultraschall-Abstandssensor | Rückgabewert in cm
 {
+  delayMicroseconds(500);
   long double duration;
   digitalWrite(ULTRA_TRIG, LOW);
   delayMicroseconds(2);
   digitalWrite(ULTRA_TRIG, HIGH);
   delayMicroseconds(10);
   digitalWrite(ULTRA_TRIG, LOW);
-
   duration = pulseIn(ULTRA_ECHO, HIGH);
   
-  double c = sqrt((1.01/0.72) * 287 * (temp + 273.15)) * 100; // in cm/s
-  return c * duration * 0.000001 / 2;
+  long double c = sqrt((28987/72)  * (temp + 273.15)) * 100; // in cm/s
+  
+  long double s =  c * duration * 0.000001;
+  long double fi = (180* acos( ULTRA_DIST/(s)  ) / PI);
+  return (s/2) * sin(PI*fi/180);
 }
+
+double distance_avg(double temp)
+{
+  long double dist = 0;
+  long double dist_ = 0;
+  long double dist__ = 0;
+  long double dist_max = 0;
+  long double dist_min = 999999999999999;
+  double i, k, j;
+  for(j=1; j<=AVG_NUM; j++)
+  {
+    for(k = 1; k<=AVG_NUM; k++)
+    {
+      for(i = 1; i<=AVG_NUM; i++)
+      {
+        dist += distance_single(temp);
+        if ((dist/ i) < dist_min)
+          dist_min = dist / i;
+        else if ((dist/ i) > dist_max)
+          dist_max = dist/ i;
+      }
+      i--;
+      dist_ += dist / i;
+      dist = 0;
+    }
+    k--;
+    dist__ += dist_ / k;
+    dist_ = 0;
+  }
+  j--;
+#if MOSKITO_SERIAL_DEBUGGING
+    Serial.print("Statistische Spannweite: ");
+    Serial.println(double(dist_max - dist_min));
+    Serial.print("Mittelwert des gemessenen Abstandes: ");
+    Serial.println(double(dist__ / j));
+#endif
+  if ((dist_max - dist_min) <= ULTRA_STAT_RANGE){
+    return double(dist__ / j);
+  }else{
+#if MOSKITO_SERIAL_DEBUGGING
+    Serial.println("Ultraschallmessung war ungültig. Spannweite der Messungen zu hoch!");
+#endif
+    return 0;
+  }
+}
+
 
 void servo_usb_runtime()
 {
@@ -260,7 +308,22 @@ void servo_usb_runtime()
         ethernet_switch(false);                         // Ethernet ausschalten
         break;
       case 'x':
-        Serial.print(int((distance(20) + TO_MIDDLE) * 1000));       // Ultraschall-Abstandssensor abfragen
+        param_ = "0";
+        for (int k=0; k<(AVG_NUM); k++) {
+          double dist = distance_avg(TEMPERATUR);       // Ultraschall-Abstandssensor abfragen
+          if (dist>0){
+            dist = (dist + TO_MIDDLE) * 1000.00;
+            unsigned long int conv = dist;
+            Serial.print(conv);
+#if MOSKITO_SERIAL_DEBUGGING
+            Serial.println("");
+#endif
+            param_ = "1";
+            break;
+          }
+        }
+        if (param_ == "0")
+          Serial.print("0");
 #if MOSKITO_SERIAL_DEBUGGING
         Serial.println("");
 #endif

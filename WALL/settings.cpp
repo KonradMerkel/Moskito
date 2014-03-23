@@ -24,6 +24,10 @@ settings::settings(QWidget *parent) :
     connect(ui->Btn_ro,SIGNAL(clicked()),this,SLOT(ro_clicked()));
     connect(ui->Btn_lu,SIGNAL(clicked()),this,SLOT(lu_clicked()));
     connect(ui->Btn_ru,SIGNAL(clicked()),this,SLOT(ru_clicked()));
+    connect(ui->Btn_lo,SIGNAL(clicked()),this,SLOT(enable_next()));
+    connect(ui->Btn_ro,SIGNAL(clicked()),this,SLOT(enable_next()));
+    connect(ui->Btn_lu,SIGNAL(clicked()),this,SLOT(enable_next()));
+    connect(ui->Btn_ru,SIGNAL(clicked()),this,SLOT(enable_next()));
     connect(ui->Btn_down,SIGNAL(clicked()),moskito,SLOT(man_down()));
     connect(ui->Btn_up,SIGNAL(clicked()),moskito,SLOT(man_up()));
     connect(ui->Btn_right,SIGNAL(clicked()),moskito,SLOT(man_right()));
@@ -50,6 +54,16 @@ void settings::enable_all()
         ui->Btn_lu->setEnabled(false);
         ui->Btn_ru->setEnabled(false);
     }
+}
+
+void settings::enable_next()
+{
+    if (ui->Btn_lo->isChecked() && ui->Btn_ru->isChecked())
+        ui->Btn_next->setEnabled(true);
+    else if (ui->Btn_lu->isChecked() && ui->Btn_ro->isChecked())
+        ui->Btn_next->setEnabled(true);
+    else
+        ui->Btn_next->setEnabled(false);
 }
 
 double settings::getAbstand()

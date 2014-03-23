@@ -60,6 +60,7 @@ public slots:
     void lu_clicked();
     void distance_clicked();
     void enable_all();
+    void enable_next();
 
 private slots:
     double calcKoord_horizontal(int alpha);             // errechnet aus den Drehwinkeln die Koordinaten

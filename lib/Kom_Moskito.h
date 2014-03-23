@@ -271,8 +271,7 @@ public slots:
             return false;
         }
 
-        alpha = 2* ((180 * atan((y+ sqrt(x*x+y*y-r * r))/(x+r))) / PI) - DELTA_ALPHA; // es gibt eine 2. Lösung!
-
+        alpha = 2* ((180 * atan((y+ sqrt(x*x+y*y-r * r))/(x+r))) / PI); // es gibt eine 2. Lösung!
 
         if (z < h)
             beta = 180 - (180* atan( sqrt(x*x + y*y) / (h-z)  ) / PI);
@@ -281,13 +280,13 @@ public slots:
         else
             beta = 90;
 
-
         //prüfung:
         double should = ( (cos(PI*alpha/180) * x + y* sin(PI*alpha/180)) );
         if((r >= should - 0.05) && (r <= should + 0.05)){
 #if DEBUGING
             cout << "Errechnetes Alpha-DELTA_ALPHA: " << alpha << " Beta: " << beta << endl;
 #endif
+            alpha = alpha  - DELTA_ALPHA;
             return true;
         }else{
             QMessageBox::warning(0,"Berechnung der Winkel","Der Winkel Alpha ist bei der Berechnungsprüfung durchgefallen.");

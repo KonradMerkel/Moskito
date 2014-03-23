@@ -20,7 +20,7 @@
       <item row="0" column="0">
        <widget class="QGroupBox" name="gBx_horizontal">
         <property name="title">
-         <string>horizontale Linie</string>
+         <string>Horizontale Linie</string>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -145,6 +145,9 @@
            <property name="text">
             <string>Punkt auf die gesamte Wand verteilen</string>
            </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
         </layout>
@@ -153,7 +156,7 @@
       <item row="0" column="1">
        <widget class="QGroupBox" name="gBx_vertikal">
         <property name="title">
-         <string>vertikale Linie</string>
+         <string>Vertikale Linie</string>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -286,7 +289,7 @@
       <item row="1" column="0">
        <widget class="QGroupBox" name="gBx_single">
         <property name="title">
-         <string>einzelne Punkte</string>
+         <string>Einzelne Punkte</string>
         </property>
         <property name="checkable">
          <bool>false</bool>

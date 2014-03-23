@@ -44,15 +44,15 @@ int main(int argc, char *argv[])
         check_Pos();
     }
     for (int i=0; i<50; i++){
-        alpha = qrand()%90;
-        beta = qrand()%90;
+        alpha = qrand()%180;
+        beta = qrand()%180;
         moskito->aim_deg(alpha, beta, 3);
         QTest::qWait(500);
         check_Pos();
     }
     for (int i=0; i<50; i++){
-        alpha = qrand()%90+90;
-        beta = qrand()%90+90;
+        alpha = qrand()%180;
+        beta = qrand()%180;
         moskito->aim_deg(alpha, beta);
         QTest::qWait(500);
         check_Pos();
